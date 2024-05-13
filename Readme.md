@@ -12,6 +12,7 @@ An API project that exposes a news feed.
   - [Principals Tools](#principals-tools)
   - [Installation](#installation)
   - [Usage](#usage)
+  - [Current Status](#current-status)
 
 ## Description
 
@@ -53,3 +54,7 @@ Throughout the project's development, the SOLID principles have been followed, w
    ```
 
 ## Usage
+
+## Current Status
+
+-[List of Task](./TODO.md)
