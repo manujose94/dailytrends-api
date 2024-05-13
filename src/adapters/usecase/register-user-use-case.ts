@@ -14,6 +14,7 @@ export class RegisterUserUseCase implements IRegisterUserCase{
   }
 
     async register({ body }: THttpRequest) {
+      console.log(body)
         const userData = validateUserData(body);
     
         const user = await this.userRepository.findByEmail(userData.email);

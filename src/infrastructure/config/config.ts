@@ -8,7 +8,7 @@ export class Config {
     static getMongoDBConnectionString(): string {
         return process.env.MONGODB_CONNECTION_STRING || 'mongodb://localhost:27010/mydatabase';
       }
-
+      
     static getLogLevel(): string {
       switch (process.env.NODE_ENV) {
         case 'test':

@@ -10,7 +10,13 @@ export const authenticateToken = (
     res: Response,
     next: NextFunction
   ): void => {
+    console.log({req})
     const authHeader = req.headers['authorization'];
+    console.log({authHeader})
+    if (!authHeader) {
+      res.status(401).json({ message: 'Unauthorized' });
+      return;
+    }
     const token = authHeader && authHeader.split(' ')[1];
   
     if (!token) {
@@ -20,7 +26,9 @@ export const authenticateToken = (
   
     try {
       const decodedToken = jwtService.verify(token);
-      (req as THttpRequest).user = decodedToken; // Add decoded token payload to request object
+      
+      (req as THttpRequest).user = decodedToken; 
+      console.log({decodedToken})
       next();
     } catch (error) {
       res.status(403).json({ message: 'Invalid token' });

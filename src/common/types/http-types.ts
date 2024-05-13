@@ -11,7 +11,6 @@ export interface THttpResponse {
 }
 
 export interface THttpResponseBody {
-    statusCode: number;
     success: boolean;
     result?: any;
     message?: string;

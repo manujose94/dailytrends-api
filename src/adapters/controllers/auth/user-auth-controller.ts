@@ -1,7 +1,7 @@
 import { LoginUserUseCase } from "../../usecase/login-user-use-case";
 import { RegisterUserUseCase } from "../../usecase/register-user-use-case";
 import { JwtService } from "../../../infrastructure/core/jwt-service";
-import { errorResponse, successResponse } from "../../../common/httpResponses";
+import { errorResponse, successLoginResponse, successResponse } from "../../../common/httpResponses";
 import { IAuthController } from "../../ports/controllers/auth-controller-interface"
 import { ILoginUserCase } from "../../../domain/auth/usecase/login-user-case-interface"
 import { THttpRequest, THttpResponse, THttpResponseBody } from "../../../common/types/http-types";
@@ -19,14 +19,19 @@ export class UserAuthController implements IAuthController {
     }
     async login(data: THttpRequest): Promise<THttpResponse> {
         try {
-            const result= await this.loginUseCase.login(data.body);
-            return successResponse({message: result});
+            const result= await this.loginUseCase.login(data);
+            return successLoginResponse(result);
         } catch (error: any) {
             return errorResponse(error.message);
         }
     }
-    register(data: THttpRequest): Promise<THttpResponse> {
-        throw new Error("Method not implemented.");
+    async register(data: THttpRequest): Promise<THttpResponse> {
+        try {
+            const result= await this.registerUseCase.register(data);
+            return successResponse({message: result});
+        } catch (error: any) {
+            return errorResponse(error.message);
+        }
     }
 
 

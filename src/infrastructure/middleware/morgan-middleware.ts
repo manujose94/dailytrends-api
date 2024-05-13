@@ -1,24 +1,27 @@
 import morgan from 'morgan';
-
-
-import { Config } from '../config/config';
 import getLogger from '../config/logger';
 
+const logger = getLogger('http');
 
-const getIpFormat = () => (Config.getEnv() === 'production' ? ':remote-addr - ' : '');
-const successResponseFormat = `${getIpFormat()}:method :url :status - :response-time ms`;
-const errorResponseFormat = `${getIpFormat()}:method :url :status - :response-time ms - message: :message`;
+const morganMiddleware = morgan(
+  function (tokens, req, res) {
+    return JSON.stringify({
+      method: tokens.method(req, res),
+      url: tokens.url(req, res),
+      status: Number.parseFloat(tokens.status(req, res) || ''), 
+      content_length: tokens.res(req, res, 'content-length'),
+      response_time: Number.parseFloat(tokens['response-time'](req, res) || ''),
+    });
+  },
+  {
+    stream: {
+    
+      write: (message) => {
+        const data = JSON.parse(message);
+        logger.http(`incoming-request`, data);
+      },
+    },
+  }
+);
 
-const logger = getLogger(Config.getLogLevel());
-
-const successHandler = morgan(successResponseFormat, {
-  skip: (req, res) => res.statusCode >= 400,
-  stream: { write: (message: string) => logger.info(message.trim()) },
-});
-
-const errorHandler = morgan(errorResponseFormat, {
-  skip: (req, res) => res.statusCode < 400,
-  stream: { write: (message: string) => logger.error(message.trim()) },
-});
-
-export { successHandler, errorHandler };
+export { morganMiddleware };

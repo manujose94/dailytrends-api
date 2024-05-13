@@ -15,3 +15,13 @@ export const loginHandler = async (req: Request, res: Response): Promise<void> =
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+export const RegisterHandler = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const typedReq = req as THttpRequest;
+    const response = await authController.register(typedReq);
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};

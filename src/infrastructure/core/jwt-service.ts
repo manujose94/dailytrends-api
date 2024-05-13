@@ -16,6 +16,7 @@ export class JwtService {
 
   sign(payload: any): string {
         try {
+          console.log(this.secretKey)
       return jwt.sign(payload, this.secretKey);
     } catch (error) {
       // Handle error gracefully
