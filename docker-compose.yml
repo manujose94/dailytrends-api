@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 8087:8080
+    container_name: ts-project
+    command: /bin/bash
+  mongo:
+    image: mongo
+    ports:
+      - 27018:27017
+    volumes:
+      - ./data:/data/db
