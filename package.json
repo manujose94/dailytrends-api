@@ -1,0 +1,45 @@
+{
+  "name": "dailytrends",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "start:dev": "node dist/index.js",
+    "test": "jest",
+    "test:integration": "jest test/integration",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" ",
+    "lint:fix": "eslint --fix \"src/**/*.ts\" \"test/**/*.ts\""
+  },
+  "author": "manujose94unsc@gmail.com",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/morgan": "^1.9.9",
+    "@types/winston": "^2.4.4",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.4",
+    "morgan": "^1.10.0",
+    "typescript": "^5.4.5",
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.24.5",
+    "@babel/preset-typescript": "^7.24.1",
+    "@eslint/js": "^9.2.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.2.0",
+    "ts-jest": "^29.1.2",
+    "typescript-eslint": "^7.8.0"
+  }
+}
