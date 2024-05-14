@@ -12,7 +12,7 @@ An API project that exposes a news feed.
   - [Principals Tools](#principals-tools)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [Current Status](#current-status)
+  - [Roadmap](#roadmap)
 
 ## Description
 
@@ -55,6 +55,19 @@ Throughout the project's development, the SOLID principles have been followed, w
 
 ## Usage
 
-## Current Status
+## Roadmap
 
--[List of Task](./TODO.md)
+- [List of Task](./TODO.md)
+
+## Best Practices
+
+Resume of best practices followed to ensure code quality, maintainability, and security:
+
+1. **Dependency Management**:
+   - Specify the exact version of each dependency to ensure consistent builds and avoid unexpected behavior due to dependency updates.
+2. **Environment Variables**:
+   - Sensitive or configurable information, such as Database connection strings, or data configuration.   
+   >  `dotenv` to load environment variables from a `.env` file.
+3. **Authentication and Authorization**:
+   - Secure your application by implementing authentication and authorization mechanisms.
+   > `jsonwebtoken` for generating and verifying JSON Web Tokens (JWTs) and `bcrypt` for hashing passwords

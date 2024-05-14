@@ -11,7 +11,7 @@ describe('LoginUserUseCase', () => {
     let mockUserRepository: IUserRepository;
     let mockEncryptor: Encryptor;
     let mockJwtService: JwtService;
-
+    let messageError = 'Operation login failed';
     beforeEach(() => {
        
         mockUserRepository = {
@@ -67,7 +67,7 @@ describe('LoginUserUseCase', () => {
 
         (mockUserRepository.findByEmail as jest.MockedFunction<typeof mockUserRepository.findByEmail>).mockResolvedValue(null);
 
-        await expect(loginUserUseCase.login(mockRequest)).rejects.toThrow('User not found');
+        await expect(loginUserUseCase.login(mockRequest)).rejects.toThrow(messageError);
     });
 
     it('should throw error when password is invalid', async () => {
@@ -88,6 +88,6 @@ describe('LoginUserUseCase', () => {
 
         (mockEncryptor.compare as jest.MockedFunction<typeof mockEncryptor.compare>).mockResolvedValue(false);
 
-        await expect(loginUserUseCase.login(mockRequest)).rejects.toThrow('User not found');
+        await expect(loginUserUseCase.login(mockRequest)).rejects.toThrow(messageError);
     });
 });
