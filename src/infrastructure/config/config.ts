@@ -26,4 +26,12 @@ export class Config {
     static getPort(): number {
         return parseInt(process.env.PORT || '3000');
     }
+
+  static getRateLimitWindowMs(): number {
+      return parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'); // 15 minutes in milliseconds
+  }
+
+  static getRateLimit(): number {
+      return parseInt(process.env.RATE_LIMIT || '100'); // Default limit to 100 requests
+  }
   }

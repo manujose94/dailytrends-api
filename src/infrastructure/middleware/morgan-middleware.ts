@@ -15,7 +15,6 @@ const morganMiddleware = morgan(
   },
   {
     stream: {
-    
       write: (message) => {
         const data = JSON.parse(message);
         logger.http(`incoming-request`, data);
