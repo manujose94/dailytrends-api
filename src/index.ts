@@ -5,7 +5,6 @@ const logger = getLogger(Config.getLogLevel());
 const port = Config.getPort();
 
 startServer(port).then(() => {
-    console.info(`Server running on port ${port}`)
     logger.info(`Server running on port ${port}`)
 }).catch((error) => {
     logger.error('Error starting server:', error);

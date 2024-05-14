@@ -4,14 +4,16 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "start:dev": "node dist/index.js",
+    "start:dev": "MONGODB_CONNECTION_STRING=mongodb://localhost:27018/mydatabase node dist/index.js",
     "test": "jest",
     "test:integration": "jest test/integration",
+    "coverage": "nyc npm test",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" ",
-    "lint:fix": "eslint --fix \"src/**/*.ts\" \"test/**/*.ts\""
+    "lint:fix": "eslint --fix \"src/**/*.ts\" \"test/**/*.ts\"",
+    "build": "npx tsc"
   },
-  "author": "manujose94unsc@gmail.com",
+  "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
@@ -20,10 +22,10 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.4",
     "morgan": "^1.10.0",
-    "typescript": "^5.4.5",
     "winston": "^3.13.0"
   },
   "devDependencies": {
@@ -39,7 +41,9 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.2.0",
+    "prettier-eslint": "^16.3.0",
     "ts-jest": "^29.1.2",
-    "typescript-eslint": "^7.8.0"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.9.0"
   }
 }

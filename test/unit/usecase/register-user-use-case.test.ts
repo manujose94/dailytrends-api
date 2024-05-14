@@ -8,7 +8,7 @@ describe('RegisterUserUseCase', () => {
     let mockEncryptor: Encryptor;
 
     beforeEach(() => {
-        // Mock dependencies
+
         mockUserRepository = {
             findByEmail: jest.fn(),
             create: jest.fn(),
@@ -18,9 +18,8 @@ describe('RegisterUserUseCase', () => {
             hash: jest.fn()
         } as unknown as Encryptor;
 
-        // Create instance of RegisterUserUseCase with mocked dependencies
         registerUserUseCase = new RegisterUserUseCase(mockUserRepository);
-        registerUserUseCase['encryptor'] = mockEncryptor; // Set the mock Encryptor directly (for unit test purposes)
+        registerUserUseCase['encryptor'] = mockEncryptor;
     });
 
     it('should register a new user', async () => {
@@ -32,29 +31,25 @@ describe('RegisterUserUseCase', () => {
             }
         } as  THttpRequest;
 
-        const mockUser = null; // User doesn't exist (mocked)
+        const mockUser = null;
 
-        // Mock repository method to return null (user not found)
         (mockUserRepository.findByEmail as jest.MockedFunction<typeof mockUserRepository.findByEmail>).mockResolvedValue(mockUser);
 
-        // Mock Encryptor hash method
         (mockEncryptor.hash as jest.MockedFunction<typeof mockEncryptor.hash>).mockResolvedValue('hashedPassword');
 
-        // Execute the use case
+
         const result = await registerUserUseCase.register(mockRequest);
 
-        // Assert the result
         expect(result).toEqual('User created');
 
-        // Assert that the repository create method was called with the correct parameters
         expect(mockUserRepository.create).toHaveBeenCalledWith({
             email: mockRequest.body.email,
-            password: 'hashedPassword' // Make sure password is hashed
+            password: 'hashedPassword'
         });
     });
 
     it('should throw error when user already exists', async () => {
-        // Mock data
+
         const mockRequest = {
             body: {
                 email: 'test@example.com',
@@ -67,12 +62,8 @@ describe('RegisterUserUseCase', () => {
             password: 'hashedPassword'
         };
 
-      
-
-        // Mock repository method to return an existing user
         (mockUserRepository.findByEmail as jest.MockedFunction<typeof mockUserRepository.findByEmail>).mockResolvedValue(mockUser);
 
-        // Execute the use case and expect it to throw an error
         await expect(registerUserUseCase.register(mockRequest)).rejects.toThrow('User already exists');
     });
 });

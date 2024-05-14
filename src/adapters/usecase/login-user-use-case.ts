@@ -21,13 +21,17 @@ private readonly jwtService: JwtService;
   
     async login({ body }: THttpRequest): Promise<string> {
       const userData = validateUserData(body);
-      const user = await this.userRepository.findByEmail(userData.email);
-      if (user) {
-        const isPasswordValid = await this.encryptor.compare(userData.password, user.password);
-        if (isPasswordValid) {
-          return this.jwtService.sign(user);
+      try {
+        const user = await this.userRepository.findByEmail(userData.email);
+        if (user) {
+          const isPasswordValid = await this.encryptor.compare(userData.password, user.password);
+          if (isPasswordValid) {
+              return this.jwtService.sign(userData);;
+          }
         }
-      }
-      throw new Error('User not found');
+        throw new Error('User not found');
+    } catch (error) {
+        throw new Error('Operation login failed');
     }
+  }
 }
