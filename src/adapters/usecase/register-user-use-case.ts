@@ -1,4 +1,4 @@
-import IUserRepository from "../../domain/auth/port/user-repository-interface";
+import IUserRepository from "../../domain/port/user-repository-interface";
 import { Encryptor } from "../services/encryptor-service";
 import { THttpRequest } from "../../common/types/http-types";
 import { validateUserData } from "../validation/validators";

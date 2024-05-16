@@ -32,6 +32,8 @@
         * [x] User: Usecases and controllers     
     * [ ] Implement unit tests with coverage and threshold
     * [ ] Consider integration tests to ensure API endpoints work as expected.
+* **Details**
+* [x] Added logger following a format to improve future analysis (For example, fluentBit and grafana)
 * **CI & CD**
     * [x] Create workflows to auto test when PR
     * [ ] Auto generate new package

@@ -1,5 +1,5 @@
 import { FeedEntity } from "../../../domain/feed/entities/feed-entity";
 
 export interface IParser {
-  parse(rawData: string, source: string): FeedEntity[];
+  parse(rawData: string, source: string, limit?: number): FeedEntity[];
 }

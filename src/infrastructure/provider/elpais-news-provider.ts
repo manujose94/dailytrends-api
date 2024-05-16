@@ -14,9 +14,9 @@ export class ElPaisNewsProvider implements INewsProvider {
     return this.name;
   }
 
-  async getNews(): Promise<FeedEntity[]> {
+  async getNewsFeeds(limit?: number): Promise<FeedEntity[]> {
     const response = await axios.get("https://www.elpais.com/");
-    return this.parser.parse(response.data, this.name);
+    return this.parser.parse(response.data, this.name, limit);
   }
 }
 

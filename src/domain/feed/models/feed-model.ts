@@ -1,6 +1,6 @@
-import { Model, Schema, model, Document } from "mongoose";
+import { Schema, model } from "mongoose";
 
-interface IFeed extends Document {
+export interface IFeed {
   title: string;
   url: string;
   publicationDate: Date;
@@ -8,7 +8,7 @@ interface IFeed extends Document {
   type: string;
 }
 
-const feedSchema = new Schema(
+const feedSchema = new Schema<IFeed>(
   {
     title: { type: String, required: true },
     url: { type: String, required: true },
@@ -24,4 +24,4 @@ const feedSchema = new Schema(
 
 feedSchema.index({ title: 1, source: 1 }, { unique: true });
 
-export const FEED_MODEL: Model<IFeed> = model<IFeed>("FEED", feedSchema);
+export const FEED_MODEL = model<IFeed>("FEED", feedSchema);

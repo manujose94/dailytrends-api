@@ -8,34 +8,32 @@ export class NewsUseCase implements IFeedUserCase {
   constructor(newsService: NewsService) {
     this.newsService = newsService;
   }
-  async executeScrape(providerName: string): Promise<FeedEntity[]> {
-    const feeds = await this.newsService.scrapeAndGetFeeds(providerName);
-    const feed_cut = feeds.slice(0, 5);
-    await this.newsService.saveFeeds(feed_cut);
-    return feeds.slice(0, 5); // Return the first five feeds
+  async executeScrape(
+    providerName: string,
+    limit?: number
+  ): Promise<FeedEntity[]> {
+    const feeds = await this.newsService.scrapeAndGetFeeds(providerName, limit);
+    //const firstFeeds = feeds.slice(0, 5);
+    await this.newsService.saveFeeds(feeds);
+    return feeds;
   }
 
   async executeScrapeAll(): Promise<FeedEntity[]> {
     const allFeeds = await this.newsService.scrapeAndGetAllFeeds();
     const feedsByProvider: { [key: string]: FeedEntity[] } = {};
-
-    // Group feeds by provider
     allFeeds.forEach((feed) => {
       if (!feedsByProvider[feed.provider]) {
         feedsByProvider[feed.provider] = [];
       }
       feedsByProvider[feed.provider].push(feed);
     });
-
-    // Get the first 5 feeds from each provider and flatten the result
     const result = Object.values(feedsByProvider)
       .map((feeds) => feeds.slice(0, 5))
       .flat();
-
     return result;
   }
 
-  async getFeedsByProvider(limit: number): Promise<FeedEntity[]> {
+  async getFeedsByProvider(limit?: number): Promise<FeedEntity[]> {
     return await this.newsService.getFeedsByProvider(limit);
   }
 
@@ -45,5 +43,21 @@ export class NewsUseCase implements IFeedUserCase {
 
   async create(feed: FeedEntity): Promise<string> {
     return await this.newsService.create(feed);
+  }
+
+  async read(id: string): Promise<FeedEntity | null> {
+    return await this.newsService.read(id);
+  }
+
+  async update(id: string, feed: Partial<FeedEntity>): Promise<boolean | null> {
+    return await this.newsService.update(id, feed);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.newsService.delete(id);
+  }
+
+  async list(limit?: number): Promise<FeedEntity[]> {
+    return await this.newsService.list(limit);
   }
 }

@@ -1,11 +1,19 @@
 import { normalizeProviderName } from "../../common/utils/normalize-provider-name";
 import { FeedEntity } from "../../domain/feed/entities/feed-entity";
-import { FEED_MODEL } from "../../domain/feed/models/feed-model";
-import IFeedRepository from "../../domain/auth/port/feeds-repository-interface";
+import { FEED_MODEL, IFeed } from "../../domain/feed/models/feed-model";
+import IFeedRepository from "../../domain/port/feeds-repository-interface";
 import { isDuplicateKeyError } from "../../common/utils/error-utils";
+import { BaseRepository } from "./base-repository";
 
-export class FeedRepository implements IFeedRepository {
+export class FeedRepository
+  extends BaseRepository<IFeed>
+  implements IFeedRepository
+{
   private feedModel = FEED_MODEL;
+
+  constructor() {
+    super(FEED_MODEL);
+  }
 
   async getFeeds(): Promise<FeedEntity[]> {
     return this.feedModel
@@ -53,7 +61,7 @@ export class FeedRepository implements IFeedRepository {
     );
   }
 
-  async getFeedsByProvider(limitPerProvider: number): Promise<FeedEntity[]> {
+  async getFeedsByProvider(limitPerProvider?: number): Promise<FeedEntity[]> {
     const aggregationPipeline = [
       {
         $group: {
@@ -64,7 +72,9 @@ export class FeedRepository implements IFeedRepository {
       {
         $project: {
           provider: "$_id",
-          feeds: { $slice: ["$feeds", limitPerProvider] }
+          feeds: {
+            $slice: limitPerProvider ? ["$feeds", limitPerProvider] : "$feeds"
+          }
         }
       },
       {
@@ -106,10 +116,9 @@ export class FeedRepository implements IFeedRepository {
     }
   }
 
-  async delete(feed: FeedEntity): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.feedModel.deleteOne({
-      title: feed.title,
-      publicationDate: feed.publicationDate
+      id: id
     });
   }
 }

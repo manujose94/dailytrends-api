@@ -1,5 +1,5 @@
 import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 export interface INewsProvider {
-  getNews(): Promise<FeedEntity[]>;
-  getNameOfProvider(): string;
+  getNewsFeeds(limit?: number): Promise<FeedEntity[]>;
+  getNameOfProvider(limit?: number): string;
 }
