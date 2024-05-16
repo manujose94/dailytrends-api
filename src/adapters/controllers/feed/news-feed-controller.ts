@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
-import { FeedRepository } from "../../../adapters/repositories/feed-repository";
-import { NewsService } from "../../../adapters/services/news-feeds-service";
+import { FeedRepository } from "../../repositories/feed-repository";
+import { NewsService } from "../../services/news-feed-service";
 import { BBCNewsProvider } from "../../../infrastructure/provider/bbc-news-provider";
 import { ElPaisNewsProvider } from "../../../infrastructure/provider/elpais-news-provider";
 import { ElMundoNewsProvider } from "../../../infrastructure/provider/elmundo-new-provider";
-import { FeedEntity } from "../../../domain/feeds/entities/feed-entity";
-import { NewsUseCase } from "../../../adapters/usecase/feed-use-case";
+import { FeedEntity } from "../../../domain/feed/entities/feed-entity";
+import { NewsUseCase } from "../../usecase/feed-use-case";
 import { normalizeProviderName } from "../../../common/utils/normalize-provider-name";
+import { INewsFeedController } from "../../ports/controllers/news-feed-controller-interface";
+
 const feedRepository = new FeedRepository();
 const providers = [
   new BBCNewsProvider(),
@@ -16,8 +18,8 @@ const providers = [
 const newsService = new NewsService(feedRepository, providers);
 const newsUseCase = new NewsUseCase(newsService);
 
-export class NewsController {
-  static async scrapeFeeds(req: Request, res: Response) {
+export class NewsController implements INewsFeedController {
+  async scrapeFeeds(req: Request, res: Response) {
     try {
       const rawProviderName = req.query.provider as string;
       const providerName = normalizeProviderName(rawProviderName);
@@ -28,7 +30,7 @@ export class NewsController {
     }
   }
 
-  static async scrapeAllFeeds(req: Request, res: Response) {
+  async scrapeAllFeeds(req: Request, res: Response) {
     try {
       const allFeeds = await newsUseCase.executeScrapeAll();
       res.json({ allFeeds });
@@ -37,7 +39,7 @@ export class NewsController {
     }
   }
 
-  static async getFeeds(req: Request, res: Response) {
+  async getFeeds(req: Request, res: Response) {
     try {
       const feeds = await newsUseCase.getFeedsByProvider(5);
       res.json(feeds);
@@ -46,7 +48,7 @@ export class NewsController {
     }
   }
 
-  static async createFeed(req: Request, res: Response) {
+  async createFeed(req: Request, res: Response) {
     try {
       const { title, url, provider, type } = req.body;
       const normalizedProvider = normalizeProviderName(provider);

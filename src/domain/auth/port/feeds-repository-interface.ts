@@ -1,5 +1,5 @@
 import { get } from "mongoose";
-import { FeedEntity } from "../../feeds/entities/feed-entity";
+import { FeedEntity } from "../../feed/entities/feed-entity";
 
 export default interface IFeedRepository {
   getFeedsByDate(date: Date): Promise<FeedEntity[]>;

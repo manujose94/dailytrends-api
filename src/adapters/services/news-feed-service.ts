@@ -1,6 +1,6 @@
-import { FeedEntity } from "../../domain/feeds/entities/feed-entity";
+import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import IFeedRepository from "../../domain/auth/port/feeds-repository-interface";
-import { INewsProvider } from "../providers/provider-feeds-interface";
+import { INewsProvider } from "../providers/provider-news-feeds-interface";
 
 export class NewsService {
   private feedRepository: IFeedRepository;

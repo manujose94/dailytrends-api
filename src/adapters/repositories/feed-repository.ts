@@ -1,7 +1,8 @@
 import { normalizeProviderName } from "../../common/utils/normalize-provider-name";
-import { FeedEntity } from "../../domain/feeds/entities/feed-entity";
-import { FEED_MODEL } from "../../domain/auth/models/feed-model";
+import { FeedEntity } from "../../domain/feed/entities/feed-entity";
+import { FEED_MODEL } from "../../domain/feed/models/feed-model";
 import IFeedRepository from "../../domain/auth/port/feeds-repository-interface";
+import { isDuplicateKeyError } from "../../common/utils/error-utils";
 
 export class FeedRepository implements IFeedRepository {
   private feedModel = FEED_MODEL;
@@ -90,11 +91,19 @@ export class FeedRepository implements IFeedRepository {
 
   async create(feed: FeedEntity): Promise<void> {
     feed.provider = normalizeProviderName(feed.provider);
-    await this.feedModel.updateOne(
-      { title: feed.title, publicationDate: feed.publicationDate },
-      feed,
-      { upsert: true }
-    );
+    try {
+      await this.feedModel.updateOne(
+        { title: feed.title, publicationDate: feed.publicationDate },
+        feed,
+        { upsert: true }
+      );
+    } catch (error) {
+      if (isDuplicateKeyError(error)) {
+        return;
+      } else {
+        throw error;
+      }
+    }
   }
 
   async delete(feed: FeedEntity): Promise<void> {

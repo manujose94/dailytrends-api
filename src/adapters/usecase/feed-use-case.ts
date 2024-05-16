@@ -1,6 +1,6 @@
-import { NewsService } from "../services/news-feeds-service";
-import { FeedEntity } from "../../domain/feeds/entities/feed-entity";
-import { IFeedUserCase } from "../../domain/feeds/usecase/feed-use-case-interface";
+import { NewsService } from "../services/news-feed-service";
+import { FeedEntity } from "../../domain/feed/entities/feed-entity";
+import { IFeedUserCase } from "../../domain/feed/usecase/feed-use-case-interface";
 
 export class NewsUseCase implements IFeedUserCase {
   private newsService: NewsService;
@@ -10,7 +10,8 @@ export class NewsUseCase implements IFeedUserCase {
   }
   async executeScrape(providerName: string): Promise<FeedEntity[]> {
     const feeds = await this.newsService.scrapeAndGetFeeds(providerName);
-    await this.newsService.saveFeeds(feeds);
+    const feed_cut = feeds.slice(0, 5);
+    await this.newsService.saveFeeds(feed_cut);
     return feeds.slice(0, 5); // Return the first five feeds
   }
 

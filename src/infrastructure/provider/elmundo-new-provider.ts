@@ -1,6 +1,6 @@
 import { ElMundoParser } from "../../adapters/services/parser-elmundo-service";
-import { INewsProvider } from "../../adapters/providers/provider-feeds-interface";
-import { FeedEntity } from "../../domain/feeds/entities/feed-entity";
+import { INewsProvider } from "../../adapters/providers/provider-news-feeds-interface";
+import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import axios from "axios";
 
 export class ElMundoNewsProvider implements INewsProvider {

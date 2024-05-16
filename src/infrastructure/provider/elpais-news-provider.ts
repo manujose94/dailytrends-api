@@ -1,6 +1,6 @@
 import { ElPaisParser } from "../../adapters/services/parser-elpais-service";
-import { INewsProvider } from "../../adapters/providers/provider-feeds-interface";
-import { FeedEntity } from "../../domain/feeds/entities/feed-entity";
+import { INewsProvider } from "../../adapters/providers/provider-news-feeds-interface";
+import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import axios from "axios";
 
 export class ElPaisNewsProvider implements INewsProvider {
@@ -15,7 +15,7 @@ export class ElPaisNewsProvider implements INewsProvider {
   }
 
   async getNews(): Promise<FeedEntity[]> {
-    const response = await axios.get("https://www.elmundo.es/");
+    const response = await axios.get("https://www.elpais.com/");
     return this.parser.parse(response.data, this.name);
   }
 }

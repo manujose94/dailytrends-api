@@ -1,4 +1,4 @@
-import { FeedEntity } from "../../domain/feeds/entities/feed-entity";
+import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import { IParser } from "../ports/parsers/parser-interface";
 import { load } from "cheerio";
 

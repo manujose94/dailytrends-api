@@ -1,8 +1,8 @@
 import axios from "axios";
 import { BBCParser } from "../../adapters/services/parser-bbc-service";
-import { INewsProvider } from "../../adapters/providers/provider-feeds-interface";
+import { INewsProvider } from "../../adapters/providers/provider-news-feeds-interface";
 import { normalizeProviderName } from "../../common/utils/normalize-provider-name";
-import { FeedEntity } from "../../domain/feeds/entities/feed-entity";
+import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 
 export class BBCNewsProvider implements INewsProvider {
   name = "BBC";

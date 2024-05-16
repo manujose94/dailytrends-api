@@ -22,6 +22,6 @@ const feedSchema = new Schema(
   }
 );
 
-feedSchema.index({ title: 1, publicationDate: 1 }, { unique: true });
+feedSchema.index({ title: 1, source: 1 }, { unique: true });
 
 export const FEED_MODEL: Model<IFeed> = model<IFeed>("FEED", feedSchema);
