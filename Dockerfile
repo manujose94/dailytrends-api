@@ -1,7 +1,4 @@
-# Use the official lightweight Node.js 14 image.
-# https://hub.docker.com/_/node
 FROM node:22.1-slim as base
-
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app

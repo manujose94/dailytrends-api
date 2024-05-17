@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { IRepository } from "../../domain/port/repository-interface";
 
 export abstract class BaseRepository<T> implements IRepository<T> {
@@ -8,8 +8,11 @@ export abstract class BaseRepository<T> implements IRepository<T> {
     this.model = model;
   }
 
-  async create(item: T): Promise<void> {
-    await this.model.create(item);
+  async create(item: T): Promise<string | null> {
+    const createdItem = (await this.model.create(item)) as T & {
+      _id: Types.ObjectId;
+    };
+    return createdItem._id.toString();
   }
 
   async read(id: string): Promise<T | null> {

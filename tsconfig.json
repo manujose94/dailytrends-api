@@ -7,17 +7,16 @@
     "module": "commonjs",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "removeComments": true,
     "outDir": "dist",
     "rootDir": "src",
     "sourceMap": true,
+    "removeComments": false,
     "strict": true,
     "skipLibCheck": true,
-    "noImplicitAny": true, 
+    "noImplicitAny": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "baseUrl": ".",
-    
+    "baseUrl": "."
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

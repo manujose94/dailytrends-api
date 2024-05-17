@@ -4,7 +4,8 @@ import { Encryptor } from "../services/encryptor-service";
 import { THttpRequest } from "../../common/types/http-types";
 import { validateUserData } from "../validation/validators";
 import { JwtService } from "../../infrastructure/core/jwt-service";
-import { ILoginUserCase } from "src/domain/auth/usecase/login-user-case-interface";
+import { ILoginUserCase } from "../../domain/auth/usecase/login-user-case-interface";
+import { AuthPreconditionException } from "../../domain/auth/exception/auth-precondition-exception";
 
 export class LoginUserUseCase implements ILoginUserCase {
   private readonly jwtService: JwtService;
@@ -30,7 +31,7 @@ export class LoginUserUseCase implements ILoginUserCase {
           return this.jwtService.sign(userData);
         }
       }
-      throw new Error("User not found");
+      throw new AuthPreconditionException("User not found");
     } catch (error) {
       throw new Error("Operation login failed");
     }

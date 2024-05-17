@@ -93,6 +93,15 @@ Throughout the project's development, the SOLID principles have been followed, w
 
 ## Usage
 
+### Api Documentation
+Swagger has been implemented via comment to automatically generate the API specification:
+
+```bash
+http://localhost:3000/api-docs
+```
+
+> NOTE: This is feasible for small projects like this one, but for larger projects it is advisable to create a separate specification file manually.
+
 ## Roadmap
 
 - [List of Task](./TODO.md)
@@ -114,3 +123,7 @@ Resume of best practices followed to ensure code quality, maintainability, and s
      - Using `bcrypt` for secure password hashing.
      - Implementing authentication and authorization mechanisms with `jsonwebtoken`.
      - Integrating `express-rate-limit` to prevent DDoS attacks by limiting the number of requests from a single IP address or user.
+5. **Documentation**
+   -  Maintain clear documentation for the API:
+      - Using `Swagger and OpenAPI` for documentation API endpoints, expected inputs, and outputs.
+

@@ -1,39 +1,52 @@
 import { LoginUserUseCase } from "../../usecase/login-user-use-case";
 import { RegisterUserUseCase } from "../../usecase/register-user-use-case";
 import { JwtService } from "../../../infrastructure/core/jwt-service";
-import { errorResponse, successLoginResponse, successResponse } from "../../../common/httpResponses";
-import { IAuthController } from "../../ports/controllers/auth-controller-interface"
-import { ILoginUserCase } from "../../../domain/auth/usecase/login-user-case-interface"
-import { THttpRequest, THttpResponse, THttpResponseBody } from "../../../common/types/http-types";
+import {
+  errorResponse,
+  successLoginResponse,
+  successResponse
+} from "../../../common/httpResponses";
+import { IAuthController } from "../../ports/controllers/auth-controller-interface";
+import { ILoginUserCase } from "../../../domain/auth/usecase/login-user-case-interface";
+import { THttpRequest, THttpResponse } from "../../../common/types/http-types";
 import UserRepository from "../../repositories/user-repository";
-import { IRegisterUserCase } from "src/domain/auth/usecase/register-user-case-interface";
+import { IRegisterUserCase } from "../../../domain/auth/usecase/register-user-case-interface";
+import { InputValidationException } from "../../../common/exceptions/input-validation-exception";
+import { AuthPreconditionException } from "../../../domain/auth/exception/auth-precondition-exception";
 
 export class UserAuthController implements IAuthController {
-    private loginUseCase: ILoginUserCase
-    private registerUseCase: IRegisterUserCase;
+  private loginUseCase: ILoginUserCase;
+  private registerUseCase: IRegisterUserCase;
 
-     constructor(jwt: JwtService) {
-        const userRepo = new UserRepository();
-        this.loginUseCase = new LoginUserUseCase(jwt, userRepo);
-        this.registerUseCase = new RegisterUserUseCase(userRepo);
+  constructor(jwtService: JwtService) {
+    const userRepo = new UserRepository();
+    this.loginUseCase = new LoginUserUseCase(jwtService, userRepo);
+    this.registerUseCase = new RegisterUserUseCase(userRepo);
+  }
+  async login(data: THttpRequest): Promise<THttpResponse> {
+    try {
+      const result = await this.loginUseCase.login(data);
+      return successLoginResponse(result);
+    } catch (err: any) {
+      if (err instanceof InputValidationException) {
+        return errorResponse(err.message, 400);
+      } else if (err instanceof AuthPreconditionException) {
+        return errorResponse(err.message, 401);
+      }
+      return errorResponse(err.message);
     }
-    async login(data: THttpRequest): Promise<THttpResponse> {
-        try {
-            const result= await this.loginUseCase.login(data);
-            return successLoginResponse(result);
-        } catch (error: any) {
-            return errorResponse(error.message);
-        }
+  }
+  async register(data: THttpRequest): Promise<THttpResponse> {
+    try {
+      const result = await this.registerUseCase.register(data);
+      return successResponse({ message: result });
+    } catch (err: any) {
+      if (err instanceof InputValidationException) {
+        return errorResponse(err.message, 400);
+      } else if (err instanceof AuthPreconditionException) {
+        return errorResponse(err.message, 401);
+      }
+      return errorResponse(err.message);
     }
-    async register(data: THttpRequest): Promise<THttpResponse> {
-        try {
-            const result= await this.registerUseCase.register(data);
-            return successResponse({message: result});
-        } catch (error: any) {
-            return errorResponse(error.message);
-        }
-    }
-
-
-  
-} 
+  }
+}

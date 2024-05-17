@@ -41,7 +41,7 @@ export class NewsUseCase implements IFeedUserCase {
     return await this.newsService.getFeedsByProviderName(provider);
   }
 
-  async create(feed: FeedEntity): Promise<string> {
+  async create(feed: FeedEntity): Promise<string | null> {
     return await this.newsService.create(feed);
   }
 

@@ -53,10 +53,9 @@ export class NewsService {
     return await this.feedRepository.getFeedsByProvider(limit);
   }
 
-  async create(feed: FeedEntity): Promise<string> {
+  async create(feed: FeedEntity): Promise<string | null> {
     feed.publicationDate = new Date();
-    await this.feedRepository.create(feed);
-    return `Feed with title "${feed.title}" created successfully.`;
+    return await this.feedRepository.create(feed);
   }
 
   async read(id: string): Promise<FeedEntity | null> {

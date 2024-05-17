@@ -8,6 +8,8 @@ import { FeedEntity } from "../../../domain/feed/entities/feed-entity";
 import { NewsUseCase } from "../../usecase/feed-use-case";
 import { normalizeProviderName } from "../../../common/utils/normalize-provider-name";
 import { INewsFeedController } from "../../ports/controllers/news-feed-controller-interface";
+import { validateFeedData } from "../../validation/feed-validator";
+import { FeedPreconditionException } from "../../../domain/feed/exceptions/feed-precondition-exception";
 
 const feedRepository = new FeedRepository();
 const providers = [
@@ -18,7 +20,7 @@ const providers = [
 const newsService = new NewsService(feedRepository, providers);
 const newsUseCase = new NewsUseCase(newsService);
 
-export class NewsController implements INewsFeedController {
+export class NewsFeedsController implements INewsFeedController {
   async scrapeFeeds(req: Request, res: Response) {
     try {
       const rawProviderName = req.query.provider as string;
@@ -65,18 +67,25 @@ export class NewsController implements INewsFeedController {
   async createFeed(req: Request, res: Response) {
     try {
       const { title, url, provider, type } = req.body;
-      const normalizedProvider = normalizeProviderName(provider);
+      validateFeedData(req.body);
       const feed = new FeedEntity(
         title,
         url,
         new Date(),
-        normalizedProvider,
+        normalizeProviderName(provider),
         type
       );
-      const message = await newsUseCase.create(feed);
-      res.json({ message });
+      const _id = await newsUseCase.create(feed);
+      if (!_id) {
+        res.status(400).send("Error creating feed");
+      }
+      res.json({ _id });
     } catch (error) {
-      res.status(500).send("Error creating feed");
+      if (error instanceof FeedPreconditionException) {
+        res.status(400).send(error.message);
+      } else {
+        res.status(500).send("Error creating feed");
+      }
     }
   }
 

@@ -1,11 +1,15 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express";
+
 import routes from "../routes";
 import { morganMiddleware } from "../middleware/morgan-middleware";
 import { Database } from "../core/database";
 import rateLimiterMiddleware from "../middleware/rate-limit-middleware";
+import { swaggerSpec } from "../config/swagger-openapi-config";
 
 export const startServer = async (port: number | string) => {
   const app = express();
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   const database = new Database();
 
   app.use(express.json());

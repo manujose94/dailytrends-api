@@ -99,17 +99,21 @@ export class FeedRepository
     );
   }
 
-  async create(feed: FeedEntity): Promise<void> {
+  async create(feed: FeedEntity): Promise<string | null> {
     feed.provider = normalizeProviderName(feed.provider);
     try {
-      await this.feedModel.updateOne(
+      const result = await this.feedModel.updateOne(
         { title: feed.title, publicationDate: feed.publicationDate },
         feed,
-        { upsert: true }
+        { upsert: true, new: true }
       );
+      if (result.upsertedId) {
+        return result.upsertedId._id.toString();
+      }
+      return null;
     } catch (error) {
       if (isDuplicateKeyError(error)) {
-        return;
+        return null;
       } else {
         throw error;
       }

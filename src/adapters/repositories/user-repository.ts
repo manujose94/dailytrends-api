@@ -23,9 +23,9 @@ export default class UserRepository
     return user.toObject();
   }
 
-  async create(item: UserEntity): Promise<void> {
+  async create(item: UserEntity): Promise<string | null> {
     const newUser = new this.userModel(item);
-    await newUser.save();
+    return (await newUser.save())._id.toString();
   }
   async update(query: any, data: Partial<UserEntity>): Promise<boolean | null> {
     return await this.userModel.findOneAndUpdate(query, data, { new: true });
