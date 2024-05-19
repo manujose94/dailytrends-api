@@ -1,16 +1,14 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 export interface THttpRequest extends Request {
   user: string;
 }
 
-export interface THttpResponse {
-  headers?: any;
-  statusCode: number;
-  body: THttpResponseBody;
-}
-
-export interface THttpResponseBody {
+interface JsonResponse {
   success: boolean;
   result?: any;
   message?: string;
+}
+
+export interface THttpResponse extends Response {
+  json: (body: JsonResponse) => this;
 }

@@ -56,7 +56,8 @@ export class NewsFeedsController implements INewsFeedController {
 
   async getFeedsByProviderName(req: Request, res: Response) {
     try {
-      const providerName = req.params.provider;
+      const rawProviderName = req.params.provider;
+      const providerName = normalizeProviderName(rawProviderName);
       const feeds = await newsUseCase.getFeedsByProviderName(providerName);
       res.json({ feeds });
     } catch (error) {

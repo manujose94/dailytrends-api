@@ -17,9 +17,7 @@ export default class UserRepository
     const user = await this.userModel
       .findOne({ email })
       .select({ email: 1, password: 1, _id: 1 });
-    if (!user) {
-      throw new Error("User not found");
-    }
+    if (!user) return null;
     return user.toObject();
   }
 

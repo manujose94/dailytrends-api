@@ -33,6 +33,7 @@ export class FeedRepository
       });
   }
 
+  //TODO: REVIEW THIS
   async getFeedsByDate(date: Date): Promise<FeedEntity[]> {
     const feeds = await this.feedModel.find({ publicationDate: date }).lean();
     return feeds.map(
@@ -48,17 +49,8 @@ export class FeedRepository
   }
 
   async getFeedsByProviderName(provider: string): Promise<FeedEntity[]> {
-    const feeds = await this.feedModel.find({ provider }).lean();
-    return feeds.map(
-      (feed) =>
-        new FeedEntity(
-          feed.title,
-          feed.url,
-          feed.publicationDate,
-          feed.provider,
-          feed.type
-        )
-    );
+    const feeds = await this.feedModel.find({ provider }).exec();
+    return feeds;
   }
 
   async getFeedsByProvider(limitPerProvider?: number): Promise<FeedEntity[]> {
@@ -85,18 +77,8 @@ export class FeedRepository
       }
     ];
 
-    const result = await this.feedModel.aggregate(aggregationPipeline).exec();
-
-    return result.map(
-      (feed) =>
-        new FeedEntity(
-          feed.title,
-          feed.url,
-          feed.publicationDate,
-          feed.provider,
-          feed.type
-        )
-    );
+    const feeds = await this.feedModel.aggregate(aggregationPipeline).exec();
+    return feeds;
   }
 
   async create(feed: FeedEntity): Promise<string | null> {

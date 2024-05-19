@@ -23,30 +23,33 @@ export class UserAuthController implements IAuthController {
     this.loginUseCase = new LoginUserUseCase(jwtService, userRepo);
     this.registerUseCase = new RegisterUserUseCase(userRepo);
   }
-  async login(data: THttpRequest): Promise<THttpResponse> {
+  async login(data: THttpRequest, res: THttpResponse): Promise<THttpResponse> {
     try {
       const result = await this.loginUseCase.login(data);
-      return successLoginResponse(result);
+      return successLoginResponse(res, result);
     } catch (err: any) {
       if (err instanceof InputValidationException) {
-        return errorResponse(err.message, 400);
+        return errorResponse(res, err.message, 400);
       } else if (err instanceof AuthPreconditionException) {
-        return errorResponse(err.message, 401);
+        return errorResponse(res, err.message, 401);
       }
-      return errorResponse(err.message);
+      return errorResponse(res, err.message);
     }
   }
-  async register(data: THttpRequest): Promise<THttpResponse> {
+  async register(
+    data: THttpRequest,
+    res: THttpResponse
+  ): Promise<THttpResponse> {
     try {
       const result = await this.registerUseCase.register(data);
-      return successResponse({ message: result });
+      return successResponse(res, result);
     } catch (err: any) {
       if (err instanceof InputValidationException) {
-        return errorResponse(err.message, 400);
+        return errorResponse(res, err.message, 400);
       } else if (err instanceof AuthPreconditionException) {
-        return errorResponse(err.message, 401);
+        return errorResponse(res, err.message, 401);
       }
-      return errorResponse(err.message);
+      return errorResponse(res, err.message);
     }
   }
 }

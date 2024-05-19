@@ -1,32 +1,27 @@
 FROM node:22.1-slim as base
-
-# Create and change to the app directory.
 WORKDIR /usr/src/app
+USER node
+COPY package*.json ./
 
-# Copy application dependency manifests to the container image.
-# A wildcard is used to ensure copying both package.json AND package-lock.json (if available).
-# COPY package*.json ./
+# Change ownership of the directory to the node user
+USER root
+RUN chown -R node:node /usr/src/app
+USER node
 
-# Install production dependencies.
-# If you add a package-lock.json, speed your build by switching to 'npm ci'.
-# RUN npm install --only=production
+RUN npm ci --only=production
+COPY --chown=node:node . .
 
-# Copy local code to the container image.
-#COPY . .
-COPY --chown=node:node . /usr/src/app
-# Install TypeScript
-RUN npm install -g typescript
-
-# Compile TypeScript into JavaScript
-# RUN tsc
-USER node  
+# Development 
 FROM base as development
+RUN npm install
+RUN npx tsc
+CMD ["npm", "run", "start:dev"]
 
-# Run the web service on container startup.
-CMD [ "node", "dist/index.js" ]
-
+# Production image
 FROM base as production
-
-ENV NODE_PATH=./build
-
+# Set environment variables for production
+ENV NODE_ENV=production
+ENV NODE_PATH=./dist
 RUN npm run build
+USER node
+CMD ["node", "dist/index.js"]

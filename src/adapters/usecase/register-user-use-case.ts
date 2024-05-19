@@ -28,6 +28,6 @@ export class RegisterUserUseCase implements IRegisterUserCase {
       ...userData
     });
 
-    return "User created";
+    return "Registration successful";
   }
 }

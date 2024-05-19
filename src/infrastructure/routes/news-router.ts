@@ -16,6 +16,10 @@ const newsFeedsController = new NewsFeedsController();
  * /scrape:
  *   get:
  *     summary: Scrape news feeds based on provider and limit
+ *     description: >
+ *       Scrapping a limited list of news feeds filtered by provider. This endpoint
+ *       queries data from a dynamic provider, and all returned data is stored on
+ *       database for persistent purposes.
  *     tags: [Feeds]
  *     security:
  *       - bearerAuth: []
@@ -55,6 +59,10 @@ router.get(
  * /scrape/all:
  *   get:
  *     summary: Scrape all available news feeds
+ *     description: >
+ *       Scrapping a all feeds based on news filtered by provider. This endpoint
+ *       queries data from a dynamic provider, and all returned data is stored on
+ *       database for persistent purposes.
  *     tags: [Feeds]
  *     security:
  *       - bearerAuth: []
