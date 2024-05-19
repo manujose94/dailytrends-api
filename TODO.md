@@ -28,7 +28,9 @@
     * [ ] Add Postman Collection for examples
     * [x] Create a visual representation of the application architecture (diagram).
     * [ ] Implement unit tests to verify the functionality of different components.
-        * [x] User: Usecases and controllers     
+        * [x] User: Usecases and controllers 
+        * [ ] Feeds: Usecases and controllers
+    * [*] Add some integration test    
     * [ ] Implement unit tests with coverage and threshold
     * [ ] Consider integration tests to ensure API endpoints work as expected.
     * [x] Swagger OpenApi Documentation
