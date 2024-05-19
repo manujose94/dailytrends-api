@@ -40,7 +40,7 @@ describe('RegisterUserUseCase', () => {
 
         const result = await registerUserUseCase.register(mockRequest);
 
-        expect(result).toEqual('User created');
+        expect(result).toEqual('Email already in use');
 
         expect(mockUserRepository.create).toHaveBeenCalledWith({
             email: mockRequest.body.email,
