@@ -1,0 +1,101 @@
+name: Automate Release Creation
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: 
+      - closed
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for the release'
+        required: true
+      description:
+        description: 'Description for the release'
+        required: true
+permissions: read-all
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # To sign.
+      contents: write # To upload release assets.
+      actions: read   # To read workflow path.
+    outputs:
+      version-release: ${{ steps.extract-version.outputs.versionrelease || steps.extract-version-from-tag.outputs.version-re }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx for test
+        uses: docker/setup-buildx-action@v3.3.0
+      - name: Build Docker Image for test NPM Dependencies and Dockerfile
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          tags: mamarbao/dailytrends:temp-test
+
+      - name: Extract version from PR description
+        id: extract-version
+        if: github.event_name == 'pull_request'
+        run: |
+          # Extract version from PR description (e.g., "Release v1.0.0")
+          VERSION=$(echo "${{ github.event.pull_request.title }}" | grep -oP '(?<=Release v)\d+\.\d+\.\d+' || echo "no_version_found")
+          if [[ "$VERSION" == "no_version_found" ]]; then
+            echo "Not found version from PR title (e.g., v1.0.0)"
+          else
+            echo "VERSION_RELEASE=${VERSION}" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Extract version from tag
+        id: extract-version-from-tag
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          # Extract version from tag (e.g., "v1.0.0")
+          if [[ "${{ github.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            VERSION=$(echo "${{ github.ref }}" | grep -oP '(?<=v)\d+\.\d+\.\d+')
+            if [ ! -z "$VERSION" ]; then
+              echo "VERSION_RELEASE=${VERSION}" >> $GITHUB_OUTPUT
+            fi
+          fi
+          echo "Version not found in the tag."
+
+      - name: Extract version from labels
+        id: extract-version-from-label
+        if: github.event_name == 'pull_request'
+        run: |
+          LABEL_VERSION="no_label_version_found"
+          for label in "${{ github.event.pull_request.labels }}"; do
+            if [[ "$label" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              LABEL_VERSION=$(echo "$label" | grep -oP '(?<=v)\d+\.\d+\.\d+')
+              break
+            fi
+          done
+          if [[ "$LABEL_VERSION" == "no_label_version_found" ]]; then
+            echo "Not found version from Label (e.g., v1.0.0)"
+          else
+            echo "VERSION_RELEASE=${LABEL_VERSION}" >> $GITHUB_OUTPUT
+          fi
+ 
+      - name: Get PR comments
+        id: pr-comments
+        if: github.event_name == 'pull_request'
+        run: |
+          COMMENTS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                     -H "Accept: application/vnd.github.v3+json" \
+                     "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+                     | jq -r '.[] | .body')
+          echo "COMMENTS=${COMMENTS}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub release
+        if: steps.extract-version.outputs.version_release || steps.extract-version-from-label.outputs.version_release || inputs.version
+        uses: softprops/action-gh-release@v2
+        with:
+          files: manager
+          tag_name: ${{ github.event_name == 'pull_request' && steps.extract-version.outputs.version_release || inputs.version }}
+          name: ${{ github.event_name == 'pull_request' && steps.extract-version.outputs.version_release || github.event_name == 'push' && steps.extract-version-from-label.outputs.version_release || inputs.version }}          
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            ${{ github.event_name == 'pull_request' && steps.pr-comments.outputs.comments || inputs.description }}

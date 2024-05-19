@@ -1,8 +1,9 @@
-import IUserRepository from "../../domain/auth/port/user-repository-interface";
+import IUserRepository from "../../domain/port/user-repository-interface";
 import { Encryptor } from "../services/encryptor-service";
 import { THttpRequest } from "../../common/types/http-types";
 import { validateUserData } from "../validation/validators";
-import { IRegisterUserCase } from "src/domain/auth/usecase/register-user-case-interface";
+import { IRegisterUserCase } from "../../domain/auth/usecase/register-user-case-interface";
+import { AuthPreconditionException } from "../../domain/auth/exception/auth-precondition-exception";
 
 export class RegisterUserUseCase implements IRegisterUserCase {
   private userRepository: IUserRepository;
@@ -13,13 +14,12 @@ export class RegisterUserUseCase implements IRegisterUserCase {
     this.encryptor = new Encryptor();
   }
   async register({ body }: THttpRequest) {
-    console.log(body);
     const userData = validateUserData(body);
 
     const user = await this.userRepository.findByEmail(userData.email);
 
     if (user) {
-      throw new Error("User already exists");
+      throw new AuthPreconditionException("Email already in use");
     }
 
     userData.password = await this.encryptor.hash(userData.password);
@@ -28,6 +28,6 @@ export class RegisterUserUseCase implements IRegisterUserCase {
       ...userData
     });
 
-    return "User created";
+    return "Registration successful";
   }
 }

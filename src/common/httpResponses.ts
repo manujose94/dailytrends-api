@@ -1,24 +1,36 @@
 import { THttpResponse } from "./types/http-types";
-
-
-export function successResponse<T>(data: T, code: number = 200): THttpResponse {
-    return {
-        body: { result: data, success: true },
-        statusCode: code === 200 ? 201 : code,
-    };
+import { Response } from "express";
+export function successResponse<T>(
+  res: Response,
+  data: T,
+  code: number = 200
+): Response {
+  return res.status(code).json({
+    success: true,
+    result: data
+  });
 }
 
-export function successLoginResponse<T>(data: T, code: number = 200): THttpResponse {
-    return {
-        body: { result: {token: data}, success: true },
-        statusCode: code === 200 ? 201 : code,
-    };
+// Successfully respond for login-specific scenario
+export function successLoginResponse<T>(
+  res: Response, // Use THttpResponse correctly to ensure type safety
+  data: T,
+  code: number = 200
+): THttpResponse {
+  return res.status(code).json({
+    success: true,
+    result: data
+  }) as THttpResponse; // Cast it back to THttpResponse
 }
 
-
-export function errorResponse(message: string, code: number = 400): THttpResponse {
-    return {
-        body: { success: false, message },
-        statusCode: code,
-    };
+// Error response handling
+export function errorResponse(
+  res: Response, // Correctly take a Response object as argument
+  message: string,
+  code: number = 500
+): Response {
+  return res.status(code).json({
+    success: false,
+    message
+  });
 }
