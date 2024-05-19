@@ -8,6 +8,7 @@ An API project that exposes a news feed.
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
     - [Architecture](#architecture)
+      - [Diagram](#diagram)
     - [Object Oriented Designs](#object-oriented-designs)
   - [Principals Tools](#principals-tools)
   - [Installation](#installation)
@@ -16,12 +17,19 @@ An API project that exposes a news feed.
     - [Running the Application](#running-the-application)
     - [Development Mode](#development-mode)
     - [Docker Usage](#docker-usage)
+      - [Development Image](#development-image)
+      - [Production Image](#production-image)
     - [Testing](#testing)
     - [Code Formatting and Linting](#code-formatting-and-linting)
-  - [Api Documentation](#api-documentation)
+    - [Api Documentation](#api-documentation)
+      - [Postman](#postman)
   - [Roadmap](#roadmap)
   - [Best Practices](#best-practices)
-  - [CI/CD Workflows](#cicd-workflows)
+    - [CI/CD Workflows](#cicd-workflows)
+      - [1. Run Tests](#1-run-tests)
+      - [2. Code Quality and Bug Detection](#2-code-quality-and-bug-detection)
+      - [3. Build Image and Push to Registry](#3-build-image-and-push-to-registry)
+      - [4. Automate Release Creation](#4-automate-release-creation)
   
 ## Description
 
@@ -86,6 +94,7 @@ Throughout the project's development, the SOLID principles have been followed, w
 - Express
 - Eslint
 - Jest
+- Swagger and Postman
 - Prettier
 - Docker
 
@@ -97,7 +106,7 @@ Throughout the project's development, the SOLID principles have been followed, w
    ```
 
 2. Install dependencies:
-   ```bash
+   ```~~bash~~
    npm install
    ```
 3. Compile the TypeScript files to JavaScrip:
