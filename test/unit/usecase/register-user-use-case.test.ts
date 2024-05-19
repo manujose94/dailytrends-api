@@ -64,6 +64,6 @@ describe('RegisterUserUseCase', () => {
 
         (mockUserRepository.findByEmail as jest.MockedFunction<typeof mockUserRepository.findByEmail>).mockResolvedValue(mockUser);
 
-        await expect(registerUserUseCase.register(mockRequest)).rejects.toThrow('User already exists');
+        await expect(registerUserUseCase.register(mockRequest)).rejects.toThrow('Email already in use');
     });
 });
