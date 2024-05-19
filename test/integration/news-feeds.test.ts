@@ -1,10 +1,8 @@
-// test/integration/news-controller.test.ts
 import request from "supertest";
-import app from "../../src/infrastructure/server/app"; // Adjust the path accordingly
-import { NewsService } from "../../src/adapters/services/news-feed-service"; // Adjust the path accordingly
-import { NewsUseCase } from "../../src/adapters/usecase/feed-use-case"; // Adjust the path accordingly
-import { FeedEntity } from "../../src/domain/feed/entities/feed-entity"; // Adjust the path accordingly
-import createApp from "../../src/infrastructure/server/app"; // Adjust the path accordingly
+import { NewsService } from "../../src/adapters/services/news-feed-service";
+import { NewsUseCase } from "../../src/adapters/usecase/feed-use-case";
+import { FeedEntity } from "../../src/domain/feed/entities/feed-entity";
+import createApp from "../../src/infrastructure/server/app";
 import { mockAuthenticateToken } from "../mocks/authenticateToken";
 jest.mock("../../src/infrastructure/core/jwt-service", () => ({
   JwtService: require("../../test/mocks/JwtService").JwtService
@@ -12,7 +10,7 @@ jest.mock("../../src/infrastructure/core/jwt-service", () => ({
 jest.mock("../../src/adapters/services/news-feed-service");
 jest.mock("../../src/adapters/usecase/feed-use-case");
 
-describe("NewsController", () => {
+describe("NewsFeedsController", () => {
   let newsServiceMock: jest.Mocked<NewsService>;
   let newsUseCaseMock: jest.Mocked<NewsUseCase>;
 
@@ -24,8 +22,6 @@ describe("NewsController", () => {
     newsUseCaseMock = new NewsUseCase(
       newsServiceMock
     ) as jest.Mocked<NewsUseCase>;
-
-    // Reset all mocks before each test
     jest.clearAllMocks();
   });
 
@@ -45,8 +41,6 @@ describe("NewsController", () => {
       .set("Authorization", "Bearer mocked-jwt-token");
 
     expect(response.status).toBe(200);
-    //expect(response.body.feeds).toEqual(mockFeeds);
-    //expect(newsUseCaseMock.executeScrape).toHaveBeenCalledWith("Provider1");
   }, 10000);
   it("should be 401 due to unauthorized", async () => {
     const mockFeeds: FeedEntity[] = [
