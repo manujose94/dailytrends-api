@@ -218,6 +218,8 @@ http://localhost:3000/api-docs
 
 #### Postman
 
+A collection Postman [here](./docs/API%20DAILYTRENDS.postman_collection.json)
+
 ## Roadmap
 
 - [List of Task](./TODO.md)
