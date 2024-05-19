@@ -1,20 +1,17 @@
-FROM node:22.1-slim as base
+FROM node:22.1-alpine as base
 WORKDIR /usr/src/app
-USER node
+
 COPY package*.json ./
+RUN npm install
 
-# Change ownership of the directory to the node user
-USER root
-RUN chown -R node:node /usr/src/app
-USER node
+COPY . .
 
+RUN npm run build
 RUN npm ci --only=production
-COPY --chown=node:node . .
 
 # Development 
 FROM base as development
-RUN npm install
-RUN npx tsc
+USER node
 CMD ["npm", "run", "start:dev"]
 
 # Production image
@@ -22,6 +19,6 @@ FROM base as production
 # Set environment variables for production
 ENV NODE_ENV=production
 ENV NODE_PATH=./dist
-RUN npm run build
+COPY --from=base /usr/src/app ./dist
 USER node
 CMD ["node", "dist/index.js"]
