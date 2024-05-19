@@ -41,7 +41,8 @@
     * [ ] Auto generate new package
 
 * **Improvements**
-    * [ ] Formalizing exceptions and Errors for Users and Feeds
+    * [x] Formalizing exceptions and Errors for Users and Feeds
+    * [ ] REVIEW ESLINT FORMAT ERRORS
     * [ ] Create more tests for better coverage
     * [ ] Unify Feeds and User response through the THttpResponse interface. Currently implemented only in the Users controller.
 
