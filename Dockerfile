@@ -1,35 +1,28 @@
-# Use the official lightweight Node.js 14 image.
-# https://hub.docker.com/_/node
-FROM node:22.1-slim as base
-
-
-# Create and change to the app directory.
+FROM node:22.1-alpine as base
 WORKDIR /usr/src/app
 
-# Copy application dependency manifests to the container image.
-# A wildcard is used to ensure copying both package.json AND package-lock.json (if available).
-# COPY package*.json ./
-
-# Install production dependencies.
-# If you add a package-lock.json, speed your build by switching to 'npm ci'.
-# RUN npm install --only=production
-
-# Copy local code to the container image.
-#COPY . .
-COPY --chown=node:node . /usr/src/app
-# Install TypeScript
-RUN npm install -g typescript
-
-# Compile TypeScript into JavaScript
-# RUN tsc
-USER node  
-FROM base as development
-
-# Run the web service on container startup.
-CMD [ "node", "dist/index.js" ]
-
-FROM base as production
-
-ENV NODE_PATH=./build
+COPY . .
+RUN npm install
 
 RUN npm run build
+RUN chown -R node:node /usr/src/app
+
+# Development 
+FROM base as development
+USER node
+CMD ["npm", "run", "start:dev"]
+
+# Production image
+FROM base as production
+WORKDIR /usr/src/app
+# Set environment variables for production
+ENV NODE_ENV=production
+ENV NODE_PATH=./dist
+
+COPY --from=base /usr/src/app ./dist
+COPY --from=base /usr/src/app/package*.json ./
+
+RUN npm ci --only=production
+
+USER node
+CMD ["node", "dist/index.js"]

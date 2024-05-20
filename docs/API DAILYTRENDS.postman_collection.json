@@ -1,0 +1,980 @@
+{
+	"info": {
+		"_postman_id": "901ae90c-e370-457f-b065-b1d4f8347885",
+		"name": "API DAILYTRENDS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4050747"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/auth/login",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/auth/register",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get News via Scrape ELMUNDO",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elmundo&limit=5",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"scrape"
+					],
+					"query": [
+						{
+							"key": "provider",
+							"value": "elmundo"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Output Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elmundo&limit=5",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"news",
+								"scrape"
+							],
+							"query": [
+								{
+									"key": "provider",
+									"value": "elmundo"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "RateLimit-Policy",
+							"value": "100;w=900"
+						},
+						{
+							"key": "RateLimit",
+							"value": "limit=100, remaining=99, reset=900"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1342"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"53e-k30SZQmghwr5mh/F1ZG2RJ2O4gw\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 16 May 2024 21:22:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"feeds\": [\n        {\n            \"title\": \"Puigdemont quiere una negociaci\\ufffdn en secreto con ERC y ya no teme una repetici\\ufffdn electoral\",\n            \"url\": \"https://www.elmundo.es/cataluna/2024/05/16/66464b71fdddffb1108b459d.html\",\n            \"publicationDate\": \"2024-05-16T21:22:46.668Z\",\n            \"provider\": \"ELMUNDO\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"Junqueras es un hombre muy coherente\",\n            \"url\": \"https://www.elmundo.es/opinion/columnistas/2024/05/16/6646233d21efa0ba4c8b45a0.html\",\n            \"publicationDate\": \"2024-05-16T21:22:46.668Z\",\n            \"provider\": \"ELMUNDO\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"El juez pide identificar \\\"al m\\ufffdximo responsable\\\" de la Fiscal\\ufffda que dio luz verde a \\\"difundir\\\" datos secretos sobre el novio de Ayuso\",\n            \"url\": \"https://www.elmundo.es/espana/2024/05/16/6645f07121efa09b688b4592.html\",\n            \"publicationDate\": \"2024-05-16T21:22:46.668Z\",\n            \"provider\": \"ELMUNDO\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"Sumar pone en riesgo el env\\ufffdo de armas a Ucrania con el intento de bloqueo de un barco en Cartagena\",\n            \"url\": \"https://www.elmundo.es/espana/2024/05/16/664630f421efa0a8498b45a0.html\",\n            \"publicationDate\": \"2024-05-16T21:22:46.669Z\",\n            \"provider\": \"ELMUNDO\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"El Senado crear\\ufffd un nuevo Premio Nacional de Tauromaquia para rectificar a Urtasun\",\n            \"url\": \"https://www.elmundo.es/espana/2024/05/16/6646653221efa0a9498b45a0.html\",\n            \"publicationDate\": \"2024-05-16T21:22:46.669Z\",\n            \"provider\": \"ELMUNDO\",\n            \"type\": \"news\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get News via Scrape ELPAIS",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elpais&limit=10",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"scrape"
+					],
+					"query": [
+						{
+							"key": "provider",
+							"value": "elpais"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Output Example ELPAIS",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elpais&limit=10",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"news",
+								"scrape"
+							],
+							"query": [
+								{
+									"key": "provider",
+									"value": "elpais"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "RateLimit-Policy",
+							"value": "100;w=900"
+						},
+						{
+							"key": "RateLimit",
+							"value": "limit=100, remaining=99, reset=900"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3264"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"cc0-DQsSPXMcFrzb7vf8T01oYFY8/vs\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 16 May 2024 21:29:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"feeds\": [\n        {\n            \"title\": \"El ataque al primer ministro eslovaco eleva el temor en la UE a una ola de violencia política\",\n            \"url\": \"https://elpais.com/internacional/2024-05-16/el-intento-de-asesinato-de-fico-eleva-el-temor-en-la-ue-a-que-la-polarizacion-derive-en-una-ola-de-violencia-politica.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"El hombre que disparó a Robert Fico actuó en solitario por su oposición al Gobierno\",\n            \"url\": \"https://elpais.com/internacional/2024-05-16/el-primer-ministro-eslovaco-robert-fico-sigue-grave-pero-su-vida-ya-no-corre-peligro-tras-el-intento-de-asesinato.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"España y Reino Unido no logran cerrar un acuerdo sobre Gibraltar\",\n            \"url\": \"https://elpais.com/espana/2024-05-16/espana-y-reino-unido-no-logran-cerrar-un-acuerdo-sobre-gibraltar.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"24 grados en Asturias y más de 40 en Córdoba: el nuevo mapa de Sanidad que alerta de cuándo el calor puede ser mortal\",\n            \"url\": \"https://elpais.com/clima-y-medio-ambiente/2024-05-16/24-grados-en-asturias-y-40-en-cordoba-sanidad-activa-el-plan-especial-por-calor-con-un-nuevo-mapa-de-alertas-mas-preciso.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"Bruselas abre una investigación a Meta por los “efectos negativos” de sus redes en la salud de los menores\",\n            \"url\": \"https://elpais.com/tecnologia/2024-05-16/bruselas-inicia-una-investigacion-contra-meta-por-sus-efectos-negativos-en-la-salud-de-los-menores.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"Ser expulsado de un chat grupal, la forma de violencia ‘online’ más señalada por los propios adolescentes\",\n            \"url\": \"https://elpais.com/sociedad/2024-05-16/ser-expulsado-de-un-chat-grupal-la-forma-de-violencia-online-mas-senalada-por-los-propios-adolescentes.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"El Gobierno deniega la escala a un buque con explosivos que va a Israel\",\n            \"url\": \"https://elpais.com/espana/2024-05-16/el-gobierno-deniega-la-escala-a-un-buque-cargado-de-explosivos-con-destino-a-israel.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"Sánchez: “Se abre un tiempo nuevo. Es esperpéntico escuchar al PP añorar el ‘procés”\",\n            \"url\": \"https://elpais.com/espana/2024-05-16/sanchez-se-abre-un-tiempo-nuevo-es-esperpentico-escuchar-al-pp-anorar-al-proces.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"Junqueras quiere que la militancia avale su aspiración a liderar ERC\",\n            \"url\": \"https://elpais.com/espana/elecciones-catalanas/2024-05-16/junqueras-quiere-que-la-militancia-avale-su-aspiracion-a-seguir-liderando-erc.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        },\n        {\n            \"title\": \"‘Megalópolis’, un colosal disparate de Coppola\",\n            \"url\": \"https://elpais.com/cultura/2024-05-16/megalopolis-la-caida-del-imperio-coppola.html\",\n            \"publicationDate\": \"2024-05-16T21:29:11.576Z\",\n            \"provider\": \"ELPAIS\",\n            \"type\": \"news\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Feeds using Limit",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/feeds?limit=6",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"feeds"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "6"
+						}
+					]
+				},
+				"description": "G"
+			},
+			"response": [
+				{
+					"name": "Output Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/news/feeds?limit=6",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"news",
+								"feeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "RateLimit-Policy",
+							"value": "100;w=900"
+						},
+						{
+							"key": "RateLimit",
+							"value": "limit=100, remaining=99, reset=900"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2062"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"80e-Tso5DgYDDNwxF+u5HBp4XgraAng\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 16 May 2024 21:58:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"_id\": \"6645eb33a9055bea357fe28f\",\n        \"title\": \"Junqueras quiere que la militancia avale su aspiración a seguir liderando ERC\",\n        \"publicationDate\": \"2024-05-16T11:15:39.961Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/espana/elecciones-catalanas/2024-05-16/junqueras-quiere-que-la-militancia-avale-su-aspiracion-a-seguir-liderando-erc.html\"\n    },\n    {\n        \"_id\": \"6645eb95a9055bea357fe2a0\",\n        \"title\": \"Salvador Illa apuesta por un Gobierno en minoría del PSC en Cataluña\",\n        \"publicationDate\": \"2024-05-16T11:15:39.961Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/espana/elecciones-catalanas/2024-05-16/salvador-illa-apuesta-por-un-gobierno-en-minoria-del-psc-en-cataluna.html\"\n    },\n    {\n        \"_id\": \"6645ec39a9055bea357fe2c6\",\n        \"title\": \"Sánchez: “Se abre un tiempo nuevo. Es esperpéntico escuchar al PP añorar al ‘procés”\",\n        \"publicationDate\": \"2024-05-16T11:21:03.912Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/espana/2024-05-16/sanchez-se-abre-un-tiempo-nuevo-es-esperpentico-escuchar-al-pp-anorar-al-proces.html\"\n    },\n    {\n        \"_id\": \"6645ec39a9055bea357fe2c9\",\n        \"title\": \"La policía de Eslovaquia acusa al hombre que disparó a Robert Fico de “intento de asesinato por venganza”\",\n        \"publicationDate\": \"2024-05-16T11:21:03.912Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/internacional/2024-05-16/el-primer-ministro-eslovaco-robert-fico-sigue-grave-pero-su-vida-ya-no-corre-peligro-tras-el-intento-de-asesinato.html\"\n    },\n    {\n        \"_id\": \"6645ec39a9055bea357fe2cb\",\n        \"title\": \"Las imprevisibles consecuencias de los magnicidios en Europa\",\n        \"publicationDate\": \"2024-05-16T11:21:03.912Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/internacional/2024-05-16/robert-fico-o-las-imprevisibles-consecuencias-de-los-magnicidios-en-europa.html\"\n    },\n    {\n        \"_id\": \"66467926a9055bea35800f0f\",\n        \"title\": \"Puigdemont quiere una negociaci\\ufffdn en secreto con ERC y ya no teme una repetici\\ufffdn electoral\",\n        \"publicationDate\": \"2024-05-16T21:22:46.668Z\",\n        \"provider\": \"ELMUNDO\",\n        \"type\": \"news\",\n        \"url\": \"https://www.elmundo.es/cataluna/2024/05/16/66464b71fdddffb1108b459d.html\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Create Feed",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"War never chnages\",\n    \"url\": \"https://skeptics.stackexchange.com/questions/31022/war-never-changes-fallout-or-ulysses-s-grant\",\n    \"type\": \"news\",\n    \"provider\": \"skeptics\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/feeds",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"feeds"
+					]
+				},
+				"description": "G"
+			},
+			"response": [
+				{
+					"name": "Output Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/news/feeds?limit=6",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"news",
+								"feeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "RateLimit-Policy",
+							"value": "100;w=900"
+						},
+						{
+							"key": "RateLimit",
+							"value": "limit=100, remaining=99, reset=900"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2062"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"80e-Tso5DgYDDNwxF+u5HBp4XgraAng\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 16 May 2024 21:58:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"_id\": \"6645eb33a9055bea357fe28f\",\n        \"title\": \"Junqueras quiere que la militancia avale su aspiración a seguir liderando ERC\",\n        \"publicationDate\": \"2024-05-16T11:15:39.961Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/espana/elecciones-catalanas/2024-05-16/junqueras-quiere-que-la-militancia-avale-su-aspiracion-a-seguir-liderando-erc.html\"\n    },\n    {\n        \"_id\": \"6645eb95a9055bea357fe2a0\",\n        \"title\": \"Salvador Illa apuesta por un Gobierno en minoría del PSC en Cataluña\",\n        \"publicationDate\": \"2024-05-16T11:15:39.961Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/espana/elecciones-catalanas/2024-05-16/salvador-illa-apuesta-por-un-gobierno-en-minoria-del-psc-en-cataluna.html\"\n    },\n    {\n        \"_id\": \"6645ec39a9055bea357fe2c6\",\n        \"title\": \"Sánchez: “Se abre un tiempo nuevo. Es esperpéntico escuchar al PP añorar al ‘procés”\",\n        \"publicationDate\": \"2024-05-16T11:21:03.912Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/espana/2024-05-16/sanchez-se-abre-un-tiempo-nuevo-es-esperpentico-escuchar-al-pp-anorar-al-proces.html\"\n    },\n    {\n        \"_id\": \"6645ec39a9055bea357fe2c9\",\n        \"title\": \"La policía de Eslovaquia acusa al hombre que disparó a Robert Fico de “intento de asesinato por venganza”\",\n        \"publicationDate\": \"2024-05-16T11:21:03.912Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/internacional/2024-05-16/el-primer-ministro-eslovaco-robert-fico-sigue-grave-pero-su-vida-ya-no-corre-peligro-tras-el-intento-de-asesinato.html\"\n    },\n    {\n        \"_id\": \"6645ec39a9055bea357fe2cb\",\n        \"title\": \"Las imprevisibles consecuencias de los magnicidios en Europa\",\n        \"publicationDate\": \"2024-05-16T11:21:03.912Z\",\n        \"provider\": \"ELPAIS\",\n        \"type\": \"news\",\n        \"url\": \"https://elpais.com/internacional/2024-05-16/robert-fico-o-las-imprevisibles-consecuencias-de-los-magnicidios-en-europa.html\"\n    },\n    {\n        \"_id\": \"66467926a9055bea35800f0f\",\n        \"title\": \"Puigdemont quiere una negociaci\\ufffdn en secreto con ERC y ya no teme una repetici\\ufffdn electoral\",\n        \"publicationDate\": \"2024-05-16T21:22:46.668Z\",\n        \"provider\": \"ELMUNDO\",\n        \"type\": \"news\",\n        \"url\": \"https://www.elmundo.es/cataluna/2024/05/16/66464b71fdddffb1108b459d.html\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Feed by ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/feeds/664692e5a9055bea35801a68",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"feeds",
+						"664692e5a9055bea35801a68"
+					]
+				},
+				"description": "G"
+			},
+			"response": [
+				{
+					"name": "Outout Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/news/feeds/664692e5a9055bea35801a68",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"news",
+								"feeds",
+								"664692e5a9055bea35801a68"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "RateLimit-Policy",
+							"value": "100;w=900"
+						},
+						{
+							"key": "RateLimit",
+							"value": "limit=100, remaining=98, reset=664"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "256"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"100-CSluUsg508Noca1F/Ih4AfJCZOQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 18 May 2024 23:03:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"feed\": {\n        \"_id\": \"664692e5a9055bea35801a68\",\n        \"title\": \"War never chnages\",\n        \"publicationDate\": \"2024-05-16T23:12:37.912Z\",\n        \"provider\": \"SKEPTICS\",\n        \"type\": \"news\",\n        \"url\": \"https://skeptics.stackexchange.com/questions/31022/war-never-changes-fallout-or-ulysses-s-grant\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Feed by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"War always change\",\n    \"url\": \"https://skeptics.stackexchange.com/questions/31022/war-never-changes-fallout-or-ulysses-s-grant\",\n    \"type\": \"news\",\n    \"provider\": \"skeptics\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/feeds/664692e5a9055bea35801a68",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"feeds",
+						"664692e5a9055bea35801a68"
+					]
+				},
+				"description": "G"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Feed by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/feeds/664692e5a9055bea35801a68",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"feeds",
+						"664692e5a9055bea35801a68"
+					]
+				},
+				"description": "G"
+			},
+			"response": [
+				{
+					"name": "Output Example",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/news/feeds/664692e5a9055bea35801a68",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"news",
+								"feeds",
+								"664692e5a9055bea35801a68"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "RateLimit-Policy",
+							"value": "100;w=900"
+						},
+						{
+							"key": "RateLimit",
+							"value": "limit=100, remaining=96, reset=444"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"27-qWXCPK5s82GFFYeHVoWwIkGc2UA\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 18 May 2024 23:06:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Feed deleted successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Feeds by Provider",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elmundo",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"scrape"
+					],
+					"query": [
+						{
+							"key": "provider",
+							"value": "elmundo"
+						}
+					]
+				},
+				"description": "G"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Feeds by Provider Name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elmundo",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"scrape"
+					],
+					"query": [
+						{
+							"key": "provider",
+							"value": "elmundo"
+						}
+					]
+				},
+				"description": "G"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseURL",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
