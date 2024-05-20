@@ -1,7 +1,8 @@
 import { NewsService } from "../services/news-feed-service";
 import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import { IFeedUserCase } from "../../domain/feed/usecase/feed-use-case-interface";
-
+import { normalizeProviderName } from "../../common/utils/normalize-provider-name";
+import { FeedData } from "./dto/feed-data-dto";
 export class NewsUseCase implements IFeedUserCase {
   private newsService: NewsService;
 
@@ -13,13 +14,12 @@ export class NewsUseCase implements IFeedUserCase {
     limit?: number
   ): Promise<FeedEntity[]> {
     const feeds = await this.newsService.scrapeAndGetFeeds(providerName, limit);
-    //const firstFeeds = feeds.slice(0, 5);
     await this.newsService.saveFeeds(feeds);
     return feeds;
   }
 
-  async executeScrapeAll(): Promise<FeedEntity[]> {
-    const allFeeds = await this.newsService.scrapeAndGetAllFeeds();
+  async executeScrapeAll(limit?: number): Promise<FeedEntity[]> {
+    const allFeeds = await this.newsService.scrapeAndGetAllFeeds(limit);
     const feedsByProvider: { [key: string]: FeedEntity[] } = {};
     allFeeds.forEach((feed) => {
       if (!feedsByProvider[feed.provider]) {
@@ -27,10 +27,8 @@ export class NewsUseCase implements IFeedUserCase {
       }
       feedsByProvider[feed.provider].push(feed);
     });
-    const result = Object.values(feedsByProvider)
-      .map((feeds) => feeds.slice(0, 5))
-      .flat();
-    return result;
+  
+    return allFeeds;
   }
 
   async getFeedsByProvider(limit?: number): Promise<FeedEntity[]> {
@@ -41,7 +39,14 @@ export class NewsUseCase implements IFeedUserCase {
     return await this.newsService.getFeedsByProviderName(provider);
   }
 
-  async create(feed: FeedEntity): Promise<string | null> {
+  async create(feedData: FeedData): Promise<string | null> {
+    const feed = new FeedEntity(
+      feedData.title,
+      feedData.url,
+      new Date(),
+      normalizeProviderName(feedData.provider),
+      feedData.type
+    );
     return await this.newsService.create(feed);
   }
 
@@ -49,8 +54,20 @@ export class NewsUseCase implements IFeedUserCase {
     return await this.newsService.read(id);
   }
 
-  async update(id: string, feed: Partial<FeedEntity>): Promise<boolean | null> {
-    return await this.newsService.update(id, feed);
+  async update(id: string, feedData: Partial<FeedData>): Promise<boolean | null> {
+    const existingFeed = await this.newsService.read(id);
+
+    if (!existingFeed) {
+      return null;
+    }
+    const updatedFeed = new FeedEntity(
+      feedData.title ?? existingFeed.title,
+      feedData.url ?? existingFeed.url,
+      new Date(), // Assuming you want to update the date to the current date
+      normalizeProviderName(feedData.provider ?? existingFeed.provider),
+      feedData.type ?? existingFeed.type
+    );
+    return await this.newsService.update(id, updatedFeed);
   }
 
   async delete(id: string): Promise<void> {

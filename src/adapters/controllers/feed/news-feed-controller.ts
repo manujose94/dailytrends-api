@@ -4,12 +4,12 @@ import { NewsService } from "../../services/news-feed-service";
 import { BBCNewsProvider } from "../../../infrastructure/provider/bbc-news-provider";
 import { ElPaisNewsProvider } from "../../../infrastructure/provider/elpais-news-provider";
 import { ElMundoNewsProvider } from "../../../infrastructure/provider/elmundo-new-provider";
-import { FeedEntity } from "../../../domain/feed/entities/feed-entity";
 import { NewsUseCase } from "../../usecase/feed-use-case";
 import { normalizeProviderName } from "../../../common/utils/normalize-provider-name";
 import { INewsFeedController } from "../../ports/controllers/news-feed-controller-interface";
 import { validateFeedData } from "../../validation/feed-validator";
 import { FeedPreconditionException } from "../../../domain/feed/exceptions/feed-precondition-exception";
+import { FeedData } from "../../../adapters/usecase/dto/feed-data-dto";
 
 const feedRepository = new FeedRepository();
 const providers = [
@@ -37,7 +37,8 @@ export class NewsFeedsController implements INewsFeedController {
 
   async scrapeAllFeeds(req: Request, res: Response) {
     try {
-      const allFeeds = await newsUseCase.executeScrapeAll();
+      const limit = parseInt(req.query.limit as string);
+      const allFeeds = await newsUseCase.executeScrapeAll(limit);
       res.json({ allFeeds });
     } catch (error) {
       res.status(500).send("Error scraping all feeds");
@@ -67,16 +68,11 @@ export class NewsFeedsController implements INewsFeedController {
 
   async createFeed(req: Request, res: Response) {
     try {
-      const { title, url, provider, type } = req.body;
-      validateFeedData(req.body);
-      const feed = new FeedEntity(
-        title,
-        url,
-        new Date(),
-        normalizeProviderName(provider),
-        type
-      );
-      const _id = await newsUseCase.create(feed);
+      
+      const feedData: FeedData = req.body;
+      validateFeedData(req.body as Partial<FeedData>);
+      
+      const _id = await newsUseCase.create(feedData);
       if (!_id) {
         res.status(400).send("Error creating feed");
       }
@@ -107,7 +103,7 @@ export class NewsFeedsController implements INewsFeedController {
   async updateFeed(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const feedUpdates: Partial<FeedEntity> = req.body;
+      const feedUpdates: Partial<FeedData> = req.body;
       const result = await newsUseCase.update(id, feedUpdates);
       res.json({ success: result });
     } catch (error) {

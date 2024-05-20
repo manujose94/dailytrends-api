@@ -209,7 +209,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -226,7 +226,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elpais&limit=10",
+					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elpais&limit=2",
 					"host": [
 						"{{BaseURL}}"
 					],
@@ -243,7 +243,7 @@
 						},
 						{
 							"key": "limit",
-							"value": "10"
+							"value": "2"
 						}
 					]
 				}
@@ -333,7 +333,7 @@
 			]
 		},
 		{
-			"name": "Get Feeds using Limit",
+			"name": "Get News via Scrape All Available Providers",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -343,7 +343,59 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elpais&limit=2",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"scrape"
+					],
+					"query": [
+						{
+							"key": "provider",
+							"value": "elpais"
+						},
+						{
+							"key": "limit",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Feeds Store using Limit",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -467,7 +519,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -588,7 +640,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -605,7 +657,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BaseURL}}/api/v1/news/feeds/664692e5a9055bea35801a68",
+					"raw": "{{BaseURL}}/api/v1/news/feeds/664bc7954984bd16ee5c755d",
 					"host": [
 						"{{BaseURL}}"
 					],
@@ -614,7 +666,7 @@
 						"v1",
 						"news",
 						"feeds",
-						"664692e5a9055bea35801a68"
+						"664bc7954984bd16ee5c755d"
 					]
 				},
 				"description": "G"
@@ -702,7 +754,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -719,7 +771,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BaseURL}}/api/v1/news/feeds/664692e5a9055bea35801a68",
+					"raw": "{{BaseURL}}/api/v1/news/feeds/664bc7954984bd16ee5c755d",
 					"host": [
 						"{{BaseURL}}"
 					],
@@ -728,7 +780,7 @@
 						"v1",
 						"news",
 						"feeds",
-						"664692e5a9055bea35801a68"
+						"664bc7954984bd16ee5c755d"
 					]
 				},
 				"description": "G"
@@ -743,7 +795,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -760,7 +812,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BaseURL}}/api/v1/news/feeds/664692e5a9055bea35801a68",
+					"raw": "{{BaseURL}}/api/v1/news/feeds/664bc7954984bd16ee5c755d",
 					"host": [
 						"{{BaseURL}}"
 					],
@@ -769,7 +821,7 @@
 						"v1",
 						"news",
 						"feeds",
-						"664692e5a9055bea35801a68"
+						"664bc7954984bd16ee5c755d"
 					]
 				},
 				"description": "G"
@@ -953,7 +1005,6 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -963,7 +1014,6 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -974,6 +1024,11 @@
 		{
 			"key": "BaseURL",
 			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE2MjQyMzAyfQ.T769BA-Zsq9NV713ebmqzGJs03ggGakCCSLliV5eYHs",
 			"type": "string"
 		}
 	]

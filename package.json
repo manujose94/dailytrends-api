@@ -9,11 +9,12 @@
     "coverage": "nyc npm test",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" ",
-    "lint:fix": "eslint --fix \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint:fix": "eslint --fix \"src/**/*.ts\"",
+    
     "build": "npx tsc",
     "start": "npm run build && node dist/index.js"
   },
-  "author": "",
+  "author": "Manuel Martinez Baños",
   "license": "ISC",
   "description": "",
   "dependencies": {

@@ -1,9 +1,10 @@
 import { Server } from "http";
 import getLogger from "../config/logger";
 import { Config } from "../config/config";
-const logger = getLogger(Config.getLogLevel());
 import createApp from "./app";
 import { Database } from "../core/database";
+const logger = getLogger(Config.getLogLevel());
+
 
 export const startServer = async (port: number | string): Promise<Server> => {
   const app = createApp();

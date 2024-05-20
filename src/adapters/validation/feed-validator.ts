@@ -1,5 +1,6 @@
 import { InputValidationException } from "../../common/exceptions/input-validation-exception";
-export function validateFeedData(data: any) {
+import { FeedData } from "../usecase/dto/feed-data-dto";
+export function validateFeedData(data: Partial<FeedData>) {
   const missingFields = [];
   if (!data.title) {
     missingFields.push("title");

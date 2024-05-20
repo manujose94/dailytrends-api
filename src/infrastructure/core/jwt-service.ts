@@ -14,21 +14,18 @@ export class JwtService {
     return new JwtService(secretKey);
   }
 
-  sign(payload: any): string {
-        try {
-          console.log(this.secretKey)
+  sign(payload: object): string {
+    try {
       return jwt.sign(payload, this.secretKey);
     } catch (error) {
-      // Handle error gracefully
       throw new Error('Error signing JWT token');
     }
   }
 
-  verify(token: string): any {
+  verify<T extends object>(token: string): T {
     try {
-      return jwt.verify(token, this.secretKey);
+      return jwt.verify(token, this.secretKey) as T;
     } catch (error) {
-      // Handle error gracefully
       throw new Error('Invalid JWT token');
     }
   }

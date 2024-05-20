@@ -22,7 +22,7 @@ export const isValidPassword = (password: string): boolean => {
   return password.length >= 6;
 };
 
-export function validateLimitParam(limitParam: any) {
+export function validateLimitParam(limitParam: string) {
   const limit = parseInt(limitParam, 10) || 5;
 
   if (isNaN(limit) || limit <= 0) {

@@ -1,5 +1,5 @@
 import express from "express";
-import { RegisterHandler, loginHandler } from "./auth-route-handlers";
+import { registerHandler, loginHandler } from "./auth-route-handlers";
 /**
  * @swagger
  * tags:
@@ -127,5 +127,5 @@ router.post("/login", loginHandler);
  *       500:
  *         description: Internal server error
  */
-router.post("/register", RegisterHandler);
+router.post("/register", registerHandler);
 export default router;

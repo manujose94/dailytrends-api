@@ -9,8 +9,8 @@ const morganMiddleware = morgan(
       method: tokens.method(req, res),
       url: tokens.url(req, res),
       status: Number.parseFloat(tokens.status(req, res) || ''), 
-      content_length: tokens.res(req, res, 'content-length'),
-      response_time: Number.parseFloat(tokens['response-time'](req, res) || ''),
+      contentLength: tokens.res(req, res, 'content-length'),
+      responseTime: Number.parseFloat(tokens['response-time'](req, res) || ''),
     });
   },
   {
