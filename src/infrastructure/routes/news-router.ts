@@ -6,7 +6,7 @@ import { validateLimit } from "../middleware/validation-middleware";
  * @swagger
  * tags:
  *   name: Feeds
- *   description: Feeds management
+ *   description: News Feeds for scraping or management of feeds
  */
 const router = express.Router();
 const newsFeedsController = new NewsFeedsController();
@@ -45,6 +45,8 @@ const newsFeedsController = new NewsFeedsController();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Feed'
+ *       401:
+ *         description: Unauthorized  
  *       500:
  *         description: Server error occurred while scraping feeds
  */
@@ -58,7 +60,7 @@ router.get(
  * @swagger
  * /scrape/all:
  *   get:
- *     summary: Scrape all available news feeds
+ *     summary: Scrape all available news feeds of each provider
  *     description: >
  *       Scrapping a all feeds based on news filtered by provider. This endpoint
  *       queries data from a dynamic provider, and all returned data is stored on
@@ -66,6 +68,13 @@ router.get(
  *     tags: [Feeds]
  *     security:
  *       - bearerAuth: []
+  *     parameters:
+ *       - name: limit
+ *         in: query
+ *         description: Maximum number of feeds to retrieve for each provider
+ *         required: false
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
  *         description: An array of all feeds successfully retrieved
@@ -75,12 +84,15 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Feed'
+ *       401:
+ *         description: Unauthorized  
  *       500:
  *         description: Server error occurred while scraping all feeds
  */
 router.get(
   "/scrape/all",
   authenticateToken,
+  validateLimit,
   newsFeedsController.scrapeAllFeeds
 );
 /**
@@ -107,6 +119,8 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Feed'
+ *       401:
+ *         description: Unauthorized  
  *       500:
  *         description: Server error occurred while fetching feeds
  */
@@ -146,6 +160,8 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Feed'
+ *       401:
+ *         description: Unauthorized 
  *       500:
  *         description: Server error occurred while fetching feeds by provider name
  */
@@ -156,34 +172,84 @@ router.get(
 );
 /**
  * @swagger
- * /feeds:
- *   post:
- *     summary: Create a news feed
+ * /feeds/provider/{provider}:
+ *   get:
+ *     summary: Get feeds by provider name
  *     tags: [Feeds]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - name: provider
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The name of the news feed provider
+ *     responses:
+ *       200:
+ *         description: A list of news feeds from the specified provider
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Feed'
+ *       400:
+ *         description: Invalid provider name
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Provider not found
+ *       500:
+ *         description: Server error
+ */
+router.post("/feeds", authenticateToken, newsFeedsController.createFeed);
+/**
+ * @swagger
+ * /feeds/{id}:
+ *   get:
+ *     summary: Get a feed by ID
+ *     tags: [Feeds]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Feed'
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               url:
+ *                 type: string
+ *               provider:
+ *                 type: string
+ *               type:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Successful response
+ *         description: Feed updated successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
- *                   type: string
- *       400:
- *         description: Error creating feed
+ *                 success:
+ *                   type: boolean
+ *       401:
+ *         description: Unauthorized
  *       500:
- *         description: Error creating feed
+ *         description: Error updating feed
  */
-router.post("/feeds", authenticateToken, newsFeedsController.createFeed);
+router.get("/feeds/:id", authenticateToken, newsFeedsController.readFeed);
+
 /**
  * @swagger
  * /feeds/{id}:
@@ -223,37 +289,10 @@ router.post("/feeds", authenticateToken, newsFeedsController.createFeed);
  *               properties:
  *                 success:
  *                   type: boolean
+ *       401:
+ *         description: Unauthorized 
  *       500:
  *         description: Error updating feed
- */
-router.get("/feeds/:id", authenticateToken, newsFeedsController.readFeed);
-
-/**
- * @swagger
- * /feeds/{id}:
- *   delete:
- *     summary: Delete a feed by ID
- *     tags: [Feeds]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Feed deleted successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *       500:
- *         description: Error deleting feed
  */
 router.put("/feeds/:id", authenticateToken, newsFeedsController.updateFeed);
 
@@ -281,6 +320,8 @@ router.put("/feeds/:id", authenticateToken, newsFeedsController.updateFeed);
  *               properties:
  *                 message:
  *                   type: string
+*       401:
+ *         description: Unauthorized
  *       500:
  *         description: Error deleting feed
  */
@@ -312,6 +353,8 @@ router.delete("/feeds/:id", authenticateToken, newsFeedsController.deleteFeed);
  *                   type: string
  *       400:
  *         description: Invalid data provided or error in feed creation
+ *       401:
+ *         description: Unauthorized 
  *       500:
  *         description: Server error occurred while creating the feed
  */

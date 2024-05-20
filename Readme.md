@@ -132,13 +132,19 @@ The application uses environment variables for configuration. Below is a table d
 
 ### Running the Application
 
-1. Start `mongo` via `docker-compose`
+1. Install Dependencies
+
+```bash
+npm install
+```
+
+2. Start `mongo` via `docker-compose`
 
 ```bash
 docker-compose up mongo   
 ```
 
-2. Start the application:
+3. Start the application:
 
 ```bash
 npm run start
@@ -217,6 +223,7 @@ npm run lint:fix
 ```
 
 ### Api Documentation
+
 Swagger has been implemented via comment to automatically generate the API specification:
 
 ```bash

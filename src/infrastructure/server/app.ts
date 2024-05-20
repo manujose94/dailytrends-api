@@ -6,10 +6,7 @@ import routes from "../routes";
 import { morganMiddleware } from "../middleware/morgan-middleware";
 import rateLimiterMiddleware from "../middleware/rate-limit-middleware";
 import { swaggerSpec } from "../config/swagger-openapi-config";
-import getLogger from "../config/logger";
-import { Config } from "../config/config";
 
-const logger = getLogger(Config.getLogLevel());
 
 const createApp = () => {
   const app = express();
@@ -24,6 +21,7 @@ const createApp = () => {
 
   app.use((req, res, next) => {
     res.status(404).json({ message: "Not Found" });
+    next();
   });
 
   return app;

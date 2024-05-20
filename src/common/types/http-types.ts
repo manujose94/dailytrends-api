@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 export interface THttpRequest extends Request {
-  user: string;
+  user: object;
 }
 
 interface JsonResponse {
   success: boolean;
-  result?: any;
+  result?: string | number | boolean | object;
   message?: string;
 }
 

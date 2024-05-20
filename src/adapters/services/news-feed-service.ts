@@ -24,14 +24,14 @@ export class NewsService {
     return await provider.getNewsFeeds(limit);
   }
 
-  //TODO:Performance this method is not optimized
-  async scrapeAndGetAllFeeds(): Promise<FeedEntity[]> {
+  async scrapeAndGetAllFeeds(limit?: number): Promise<FeedEntity[]> {
     let allFeeds: FeedEntity[] = [];
-    for (const provider of this.providers) {
-      const feeds = await provider.getNewsFeeds();
-      await this.saveFeeds(feeds);
-      allFeeds = allFeeds.concat(feeds);
-    }
+    const feedPromises = this.providers.map(provider => provider.getNewsFeeds(limit));
+    const feedsArray = await Promise.all(feedPromises);
+    allFeeds = feedsArray.flat();
+    this.saveFeeds(allFeeds).catch(error => {
+      throw new Error('Error saving feeds:'+ error.message);
+    });
     return allFeeds;
   }
 

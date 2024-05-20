@@ -13,21 +13,24 @@ export class RegisterUserUseCase implements IRegisterUserCase {
     this.userRepository = userRepository;
     this.encryptor = new Encryptor();
   }
-  async register({ body }: THttpRequest) {
-    const userData = validateUserData(body);
-
-    const user = await this.userRepository.findByEmail(userData.email);
-
-    if (user) {
-      throw new AuthPreconditionException("Email already in use");
+  async register(data: THttpRequest): Promise<string> {
+    
+      const userData = validateUserData(data.body);
+  
+      const user = await this.userRepository.findByEmail(userData.email);
+  
+      if (user) {
+        throw new AuthPreconditionException("Email already in use");
+      }
+  
+      userData.password = await this.encryptor.hash(userData.password);
+  
+      await this.userRepository.create({
+        ...userData,
+      });
+  
+      return "Registration successful";
     }
-
-    userData.password = await this.encryptor.hash(userData.password);
-
-    await this.userRepository.create({
-      ...userData
-    });
-
-    return "Registration successful";
-  }
+  
+ 
 }

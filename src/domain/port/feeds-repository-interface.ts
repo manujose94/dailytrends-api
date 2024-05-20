@@ -1,4 +1,3 @@
-import { get } from "mongoose";
 import { FeedEntity } from "../feed/entities/feed-entity";
 import { IRepository } from "./repository-interface";
 

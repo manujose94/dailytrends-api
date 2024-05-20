@@ -27,13 +27,13 @@ export class UserAuthController implements IAuthController {
     try {
       const result = await this.loginUseCase.login(data);
       return successLoginResponse(res, result);
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof InputValidationException) {
         return errorResponse(res, err.message, 400);
       } else if (err instanceof AuthPreconditionException) {
         return errorResponse(res, err.message, 401);
       }
-      return errorResponse(res, err.message);
+      return errorResponse(res,"Error logging in");;
     }
   }
   async register(
@@ -43,13 +43,13 @@ export class UserAuthController implements IAuthController {
     try {
       const result = await this.registerUseCase.register(data);
       return successResponse(res, result);
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof InputValidationException) {
         return errorResponse(res, err.message, 400);
       } else if (err instanceof AuthPreconditionException) {
         return errorResponse(res, err.message, 401);
       }
-      return errorResponse(res, err.message);
+      return errorResponse(res, "Error registering");
     }
   }
 }
