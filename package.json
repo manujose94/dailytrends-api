@@ -1,6 +1,6 @@
 {
   "name": "dailytrends",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "index.js",
   "scripts": {
     "start:dev": "MONGODB_CONNECTION_STRING=mongodb://localhost:27018/mydatabase node dist/index.js",
@@ -10,7 +10,6 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" ",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
-    
     "build": "npx tsc",
     "start": "npm run build && node dist/index.js"
   },

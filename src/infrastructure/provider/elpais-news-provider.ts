@@ -1,5 +1,5 @@
 import { ElPaisParser } from "../../adapters/services/parser-elpais-service";
-import { INewsProvider } from "../../adapters/providers/provider-news-feeds-interface";
+import { INewsProvider } from "../../adapters/ports/providers/provider-news-feeds-interface";
 import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import axios from "axios";
 
