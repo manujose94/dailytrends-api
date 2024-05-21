@@ -48,37 +48,48 @@ The **Clean Architecture** principles is used, which divide issues into layers a
 
 ```mermaid
 graph TD
-    UI["User Interface (UI Layer)"] --> Controllers["Controllers"]
-    Controllers --> UseCases["Use Cases"]
-    UseCases --> Entities["_Entities_"]
-    UseCases --> Repositories["Repositories"]
+    UI["UI Layer"] --> Controllers["Controllers"]
+    UseCases --> Entities["Entities"]
     Repositories --> DataSources["Data Sources"]
-    DataSources --> Server["Server (Express API)"]
-    DataSources --> Database["Database (MongoDB)"]
-
-    UI:::layer
-    Controllers:::layer
-    UseCases:::layer
-    Entities:::layer
-    Repositories:::layer
-    DataSources:::layer
-    Server:::layer
-    Database:::layer
-
-    subgraph adapters["adapter (Application Layer)"]
-        Controllers
-        UseCases
-        Repositories
+    UseCases -.-> Ports  
+    subgraph domain["Domain (Domain Layer)"]
+        Models["Models"]
+        Exception["Exception"]
+        Entities["Entities"]
+        Ports["Ports (Interfaces)"]
+        Entities --> Models
+        Entities --> Exception 
     end
 
-    subgraph domain["domain (Domain Layer)"]
-        Entities
+    subgraph adapters["Adapter (Application Layer)"]
+        Controllers["Controllers"]
+        UseCases["Use Cases"]
+        Repositories["Repositories"]
+        Services["Services"]
+        Port["Ports"]
+        Validation["Validation"]
+        Controllers --> UseCases
+        UseCases --> Repositories
+        UseCases --> Services
+        Services --> Port
+        Services --> Validation
     end
 
-    subgraph infrastructure["infrastructure (Infrastructure Layer)"]
-        DataSources
-        Server
-        Database
+    subgraph infrastructure["Infrastructure (Infrastructure Layer)"]
+        
+        Server["Server"]
+        Routes["Routes"]
+        Middleware["Middleware"]
+        Config["Config"]
+        Provider["Provider"]
+        Database["Database (MongoDB)"]
+        DataSources["Data Sources"]
+        DataSources --> Database
+        DataSources --> Server
+        Server --> Routes
+        Server --> Middleware
+        Server --> Config
+        Server --> Provider
     end
 ```
 
