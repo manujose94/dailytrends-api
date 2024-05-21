@@ -26,7 +26,7 @@ export class UserAuthController implements IAuthController {
   async login(data: THttpRequest, res: THttpResponse): Promise<THttpResponse> {
     try {
       const result = await this.loginUseCase.login(data);
-      return successLoginResponse(res, result);
+      return successLoginResponse(res, {token: result});
     } catch (err) {
       if (err instanceof InputValidationException) {
         return errorResponse(res, err.message, 400);

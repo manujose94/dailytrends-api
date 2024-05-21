@@ -30,28 +30,29 @@ describe("NewsFeedsController", () => {
 
   it("should scrape feeds by provider", async () => {
     const mockFeeds: FeedEntity[] = [
-      new FeedEntity("Title1", "URL1", new Date(), "Provider1", "Type1"),
-      new FeedEntity("Title2", "URL2", new Date(), "Provider1", "Type2")
+      new FeedEntity("Title of New", "URL1", new Date(), "ELMUNDO", "Type1"),
+      new FeedEntity("Title of New2", "URL2", new Date(), "ELMUNDO", "Type2")
     ];
 
     newsUseCaseMock.executeScrape.mockResolvedValue(mockFeeds);
 
     const response = await request(app)
-      .get("/api/v1/news/scrape?provider=Provider1")
+      .get("/api/v1/news/scrape?provider=ELMUNDO")
       .set("Authorization", "Bearer mocked-jwt-token");
 
     expect(response.status).toBe(200);
   }, 10000);
+
   it("should be 401 due to unauthorized", async () => {
     const mockFeeds: FeedEntity[] = [
-      new FeedEntity("Title1", "URL1", new Date(), "Provider1", "Type1"),
-      new FeedEntity("Title2", "URL2", new Date(), "Provider1", "Type2")
+      new FeedEntity("Title of New", "URL1", new Date(), "ELMUNDO", "Type1"),
+      new FeedEntity("Title of New2", "URL2", new Date(), "ELMUNDO", "Type2")
     ];
 
     newsUseCaseMock.executeScrape.mockResolvedValue(mockFeeds);
 
     const response = await request(app).get(
-      "/api/v1/news/scrape?provider=Provider1"
+      "/api/v1/news/scrape?provider=ELMUNDO"
     );
 
     expect(response.status).toBe(401);
