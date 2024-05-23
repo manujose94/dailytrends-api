@@ -1,41 +1,42 @@
-# DailyTrends API
+# DailyTrends API 📈
 
 An API project that exposes a news feed.
 
-## Table of Contents
+## Table of Contents 📋
 
-- [DailyTrends API](#dailytrends-api)
-  - [Table of Contents](#table-of-contents)
-  - [Description](#description)
-    - [Architecture](#architecture)
-      - [Diagram](#diagram)
-    - [Object Oriented Designs](#object-oriented-designs)
-  - [Principals Tools](#principals-tools)
-  - [Installation](#installation)
-  - [Usage](#usage)
-    - [Environment Variables](#environment-variables)
-    - [Running the Application](#running-the-application)
-    - [Development Mode](#development-mode)
-    - [Docker Usage](#docker-usage)
-      - [Development Image](#development-image)
-      - [Production Image](#production-image)
-    - [Testing](#testing)
-    - [Code Formatting and Linting](#code-formatting-and-linting)
-    - [Api Documentation](#api-documentation)
-      - [Postman](#postman)
-  - [Roadmap](#roadmap)
-  - [Best Practices](#best-practices)
+- [DailyTrends API 📈](#dailytrends-api-)
+  - [Table of Contents 📋](#table-of-contents-)
+  - [Description 📄](#description-)
+    - [Architecture 🏛️](#architecture-️)
+      - [Diagram 📊](#diagram-)
+    - [Flowcharts 📝](#flowcharts-)
+    - [Object Oriented Designs 💻](#object-oriented-designs-)
+  - [Principal Tools 🛠️](#principal-tools-️)
+  - [Installation 💾](#installation-)
+  - [Usage 🚀](#usage-)
+    - [Environment Variables 🌐](#environment-variables-)
+    - [Running the Application ▶️](#running-the-application-️)
+    - [Development Mode 👩‍💻](#development-mode-)
+    - [Docker Usage 🐳](#docker-usage-)
+      - [Development Image 🛠️](#development-image-️)
+      - [Production Image 📦](#production-image-)
+    - [Testing 🧪](#testing-)
+    - [Code Formatting and Linting 🧹](#code-formatting-and-linting-)
+    - [API Documentation 📜](#api-documentation-)
+      - [Postman 📬](#postman-)
+  - [Roadmap 🛤️](#roadmap-️)
+  - [Best Practices 🌟](#best-practices-)
     - [CI/CD Workflows](#cicd-workflows)
       - [1. Run Tests](#1-run-tests)
       - [2. Code Quality and Bug Detection](#2-code-quality-and-bug-detection)
       - [3. Build Image and Push to Registry](#3-build-image-and-push-to-registry)
       - [4. Automate Release Creation](#4-automate-release-creation)
   
-## Description
+## Description 📄
 
 DailyTrends is an API that exposes a news feed aggregator. This feed collects news from different newspapers, focusing on the top headlines from leading newspapers. When a user accesses DailyTrends, they will see the top 5 headlines from `El País` and `El Mundo` for the current day. Additionally, users can manually add news articles through the API.
 
-### Architecture
+### Architecture 🏛️
 
 The **Clean Architecture** principles is used, which divide issues into layers and guarantee that business logic and infrastructure concerns are kept distinct from one another. Principal benefits consist of:
 
@@ -44,7 +45,7 @@ The **Clean Architecture** principles is used, which divide issues into layers a
 - **Testability**: Comprehensive unit testing is made possible by the isolation of business logic from external dependencies.
 - **Adaptability**: Modifications to external frameworks or dependencies little affect the main business logic.
 
-#### Diagram
+#### Diagram 📊
 
 ```mermaid
 graph TD
@@ -93,11 +94,16 @@ graph TD
     end
 ```
 
-### Object Oriented Designs
+### Flowcharts 📝
+
+1. [User Registration, Login, Token Usage, and Release Process](diagrams/user-registration-login-process.md)
+2. [Detailed eScrape Process](diagrams/escrape-process.md)
+
+### Object Oriented Designs 💻
 
 Throughout the project's development, the SOLID principles have been followed, which combined help to maintain a clean architectural structure and improve the project's overall quality and maintainability.
 
-## Principals Tools
+## Principal Tools 🛠️
 
 - Node.js
 - npm (Node Package Manager)
@@ -109,7 +115,7 @@ Throughout the project's development, the SOLID principles have been followed, w
 - Prettier
 - Docker
 
-## Installation
+## Installation 💾
 
 1. Clone the repository:
    ```bash
@@ -117,141 +123,136 @@ Throughout the project's development, the SOLID principles have been followed, w
    ```
 
 2. Install dependencies:
-   ```~~bash~~
+   ```bash
    npm install
    ```
-3. Compile the TypeScript files to JavaScrip:
 
-```bash
-npx tsc
-```
+3. Compile the TypeScript files to JavaScript:
+   ```bash
+   npx tsc
+   ```
 
-## Usage
+## Usage 🚀
 
-### Environment Variables
+### Environment Variables 🌐
 
 The application uses environment variables for configuration. Below is a table describing each environment variable:
 
 | Variable                   | Description                                         | Default Value                            |
 |----------------------------|-----------------------------------------------------|------------------------------------------|
 | `JWT_SECRET_KEY`           | Secret key for JWT authentication.                  | `default_secret_key`                     |
-| `MONGODB_CONNECTION_STRING`| MongoDB connection string.                          | `mongodb://localhost:27010/mydatabase`   |
+| `MONGODB_CONNECTION_STRING`| MongoDB connection string.                          | `mongodb://localhost:27018/mydatabase`   |
 | `NODE_ENV`                 | Environment the application is running in.          | `development`                            |
 | `PORT`                     | The port on which the application runs.             | `3000`                                   |
 | `RATE_LIMIT_WINDOW_MS`     | Timeframe for rate limit in milliseconds.           | `900000` (15 minutes)                    |
 
+### Running the Application ▶️
 
-### Running the Application
+1. Install Dependencies:
+   ```bash
+   npm install
+   ```
 
-1. Install Dependencies
-
-```bash
-npm install
-```
-
-2. Start `mongo` via `docker-compose`
-
-```bash
-docker-compose up mongo   
-```
+2. Start `mongo` via `docker-compose`:
+   ```bash
+   docker-compose up mongo
+   ```
 
 3. Start the application:
-
-```bash
-npm run start
-```
+   ```bash
+   npm run start
+   ```
 
 > This will run the compiled JavaScript files located in the `dist` directory.
 
-### Development Mode
+### Development Mode 👩‍💻
 
 To run the application in development mode with a MongoDB connection string:
+   ```bash
+   docker-compose up mongo
+   npm run start:dev
+   ```
 
-```bash
-docker-compose up mongo 
+> This script sets the MongoDB connection string environment variable (url to connect `docker-compose up mongo`) and starts the application.
 
-npm run start:dev
-```
+### Docker Usage 🐳
 
-> This script sets the MongoDB connection string environment variable ( url to connect `docker-compose up mongo `) and starts the application.
+First, use the `.env` file based on the `.env_example` template:
 
-### Docker Usage
-
-First, use `.env` file based on the `.env_example` template:
-
-```bash
-### .env_example File
 ```plaintext
+# .env_example File
 # Environment variables for application
 JWT_SECRET_KEY=default_secret_key
-MONGODB_CONNECTION_STRING=mongodb://localhost:27010/mydatabase
+MONGODB_CONNECTION_STRING=mongodb://localhost:27018/mydatabase
 NODE_ENV=development
 PORT=3000
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT=100
 ```
 
-In this case the multi-stage Docker build to separate development and production environments:
+This case uses a multi-stage Docker build to separate development and production environments:
 
-#### Development Image
+#### Development Image 🛠️
 
 ```bash
 docker build --target development -t dailytrends-dev .
 docker run --env-file .env -p 3000:3000 dailytrends-dev
 ```
 
-#### Production Image
+#### Production Image 📦
 
 ```bash
 docker build --target production -t dailytrends-prod .
 docker run --env-file .env -p 80:3000 dailytrends-prod
 ```
 
-### Testing
+### Testing 🧪
 
 Run integration tests using:
+   ```bash
+   # All tests
+   npm run test 
+   # Only Integration tests
+   npm run test:integration
+   ```
 
-```bash
-npm run test:integration
-```
+### Code Formatting and Linting 🧹
 
-### Code Formatting and Linting
-
-```bash
-npm run format
-```
+   ```bash
+   npm run format
+   ```
 
 To lint TypeScript files:
 
-```bash
-npm run lint
-```
+   ```bash
+   npm run lint
+   ```
 
 For automatically fixing linting errors:
 
-```bash
-npm run lint:fix
-```
+   ```bash
+   npm run lint:fix
+   ```
 
-### Api Documentation
+### API Documentation 📜
 
-Swagger has been implemented via comment to automatically generate the API specification:
+Swagger has been implemented via comments to automatically generate the API specification:
 
-```bash
-http://localhost:3000/api-docs
-```
+   ```bash
+   http://localhost:3000/api-docs
+   ```
 
 > NOTE: This is feasible for small projects like this one, but for larger projects it is advisable to create a separate specification file manually.
 
-#### Postman
+#### Postman 📬
 
 A collection Postman [here](./docs/API%20DAILYTRENDS.postman_collection.json)
 
-## Roadmap
+## Roadmap 🛤️
 
 - [List of Task](./TODO.md)
 
-## Best Practices
+## Best Practices 🌟
 
 Resume of best practices followed to ensure code quality, maintainability, and security:
 
