@@ -247,9 +247,8 @@ For automatically fixing linting errors:
 Swagger has been implemented via comments to automatically generate the API specification:
 
    ```bash
-   http://localhost:3000/api-docs
+   http://localhost:3000/api/v1/api-docs
    ```
-
 > NOTE: This is feasible for small projects like this one, but for larger projects it is advisable to create a separate specification file manually.
 
 #### Postman 📬
