@@ -9,7 +9,7 @@ import { registerHandler, loginHandler } from "./auth-route-handlers";
 const router = express.Router();
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Logs in a user
  *     tags: [Authentication]
@@ -71,7 +71,7 @@ router.post("/login", loginHandler);
 
 /**
  * @swagger
- * /register:
+ * /auth/register:
  *   post:
  *     summary: Registers a new user
  *     tags: [Authentication]

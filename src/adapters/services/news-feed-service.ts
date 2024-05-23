@@ -1,3 +1,4 @@
+import { FeedConditionException } from "../../common/exceptions/feeds-condition-exception";
 import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import IFeedRepository from "../../domain/port/feeds-repository-interface";
 import { INewsProvider } from "../ports/providers/provider-news-feeds-interface";
@@ -19,7 +20,7 @@ export class NewsService {
       (p) => p.getNameOfProvider() === providerName
     );
     if (!provider) {
-      throw new Error(`Provider ${providerName} not found`);
+      throw new FeedConditionException(`Provider ${providerName} not found`);
     }
     return await provider.getNewsFeeds(limit);
   }
@@ -30,7 +31,7 @@ export class NewsService {
     const feedsArray = await Promise.all(feedPromises);
     allFeeds = feedsArray.flat();
     this.saveFeeds(allFeeds).catch(error => {
-      throw new Error('Error saving feeds:'+ error.message);
+      throw new FeedConditionException('Error saving feeds:'+ error.message);
     });
     return allFeeds;
   }

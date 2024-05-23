@@ -10,6 +10,8 @@ import { INewsFeedController } from "../../ports/controllers/news-feed-controlle
 import { validateFeedData } from "../../validation/feed-validator";
 import { FeedPreconditionException } from "../../../domain/feed/exceptions/feed-precondition-exception";
 import { FeedData } from "../../../adapters/usecase/dto/feed-data-dto";
+import { FeedConditionException } from "../../../common/exceptions/feeds-condition-exception";
+import { errorResponse, successResponse } from "../../../common/httpResponses";
 
 const feedRepository = new FeedRepository();
 const providers = [
@@ -24,14 +26,16 @@ export class NewsFeedsController implements INewsFeedController {
   async scrapeFeeds(req: Request, res: Response) {
     try {
       const rawProviderName = req.query.provider as string;
-      const limit = req.query.limit
-        ? parseInt(req.query.limit as string, 10)
-        : undefined;
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
       const providerName = normalizeProviderName(rawProviderName);
       const feeds = await newsUseCase.executeScrape(providerName, limit);
-      res.json({ feeds });
+      return successResponse(res, { feeds });
     } catch (error) {
-      res.status(500).send("Error scraping feeds");
+      if (error instanceof FeedConditionException) {
+        return errorResponse(res, error.message, 400);
+      } else {
+        return errorResponse(res, "Error scraping feeds");
+      }
     }
   }
 
@@ -39,9 +43,9 @@ export class NewsFeedsController implements INewsFeedController {
     try {
       const limit = parseInt(req.query.limit as string);
       const allFeeds = await newsUseCase.executeScrapeAll(limit);
-      res.json({ allFeeds });
+      return successResponse(res, { allFeeds });
     } catch (error) {
-      res.status(500).send("Error scraping all feeds");
+      return errorResponse(res, "Error scraping all feeds");
     }
   }
 
@@ -49,9 +53,9 @@ export class NewsFeedsController implements INewsFeedController {
     try {
       const limit = parseInt(req.query.limit as string);
       const feeds = await newsUseCase.getFeedsByProvider(limit);
-      res.json({ feeds });
+      return successResponse(res, { feeds });
     } catch (error) {
-      res.status(500).send("Error fetching feeds");
+      return errorResponse(res, "Error fetching feeds");
     }
   }
 
@@ -60,28 +64,26 @@ export class NewsFeedsController implements INewsFeedController {
       const rawProviderName = req.params.provider;
       const providerName = normalizeProviderName(rawProviderName);
       const feeds = await newsUseCase.getFeedsByProviderName(providerName);
-      res.json({ feeds });
+      return successResponse(res, { feeds });
     } catch (error) {
-      res.status(500).send("Error fetching feeds by provider name");
+      return errorResponse(res, "Error fetching feeds by provider name");
     }
   }
 
   async createFeed(req: Request, res: Response) {
     try {
-      
       const feedData: FeedData = req.body;
       validateFeedData(req.body as Partial<FeedData>);
-      
       const _id = await newsUseCase.create(feedData);
       if (!_id) {
-        res.status(400).send("Error creating feed");
+        return errorResponse(res, "Error creating feed", 400);
       }
-      res.json({ _id });
+      return successResponse(res, { _id });
     } catch (error) {
       if (error instanceof FeedPreconditionException) {
-        res.status(400).send(error.message);
+        return errorResponse(res, error.message, 400);
       } else {
-        res.status(500).send("Error creating feed");
+        return errorResponse(res, "Error creating feed");
       }
     }
   }
@@ -91,12 +93,12 @@ export class NewsFeedsController implements INewsFeedController {
       const id = req.params.id;
       const feed = await newsUseCase.read(id);
       if (feed) {
-        res.json({ feed });
+        return successResponse(res, { feed });
       } else {
-        res.status(404).send("Feed not found");
+        return errorResponse(res, "Feed not found", 404);
       }
     } catch (error) {
-      res.status(500).send("Error reading feed");
+      return errorResponse(res, "Error reading feed");
     }
   }
 
@@ -105,9 +107,9 @@ export class NewsFeedsController implements INewsFeedController {
       const id = req.params.id;
       const feedUpdates: Partial<FeedData> = req.body;
       const result = await newsUseCase.update(id, feedUpdates);
-      res.json({ success: result });
+      return successResponse(res, { success: result });
     } catch (error) {
-      res.status(500).send("Error updating feed");
+      return errorResponse(res, "Error updating feed");
     }
   }
 
@@ -115,9 +117,9 @@ export class NewsFeedsController implements INewsFeedController {
     try {
       const id = req.params.id;
       await newsUseCase.delete(id);
-      res.json({ message: "Feed deleted successfully" });
+      return successResponse(res, { message: "Feed deleted successfully" });
     } catch (error) {
-      res.status(500).send("Error deleting feed");
+      return errorResponse(res, "Error deleting feed");
     }
   }
 
@@ -125,9 +127,9 @@ export class NewsFeedsController implements INewsFeedController {
     try {
       const limit = parseInt(req.query.limit as string);
       const feeds = await newsUseCase.list(limit);
-      res.json(feeds);
+      return successResponse(res, { feeds });
     } catch (error) {
-      res.status(500).send("Error listing feeds");
+      return errorResponse(res, "Error listing feeds");
     }
   }
 }
