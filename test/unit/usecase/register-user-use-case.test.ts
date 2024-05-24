@@ -1,7 +1,8 @@
 import { Encryptor } from "src/adapters/services/encryptor-service";
-import IUserRepository from "../../../src/domain/auth/port/user-repository-interface";
+
 import { RegisterUserUseCase } from "../../../src/adapters/usecase/register-user-use-case";
 import { THttpRequest } from "src/common/types/http-types";
+import IUserRepository from "src/domain/port/user-repository-interface";
 describe("RegisterUserUseCase", () => {
   let registerUserUseCase: RegisterUserUseCase;
   let mockUserRepository: IUserRepository;
@@ -11,10 +12,13 @@ describe("RegisterUserUseCase", () => {
     mockUserRepository = {
       findByEmail: jest.fn(),
       create: jest.fn(),
-      update: jest.fn()
+      update: jest.fn(),
+      read: jest.fn(),
+      delete: jest.fn(),
+      list: jest.fn(),
     };
     mockEncryptor = {
-      hash: jest.fn()
+      hash: jest.fn(),
     } as unknown as Encryptor;
 
     registerUserUseCase = new RegisterUserUseCase(mockUserRepository);

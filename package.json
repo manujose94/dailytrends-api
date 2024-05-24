@@ -6,7 +6,7 @@
     "start:dev": "MONGODB_CONNECTION_STRING=mongodb://localhost:27018/mydatabase node dist/index.js",
     "test": "jest ",
     "test:integration": "jest test/integration",
-    "coverage": "nyc npm test",
+    "test:coverage": "jest --config test/jest.config.js --coverage",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" ",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",

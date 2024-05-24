@@ -1,0 +1,35 @@
+name: Run tests allowing coverage
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+    inputs:
+      coverage:
+        description: 'Run tests with coverage'
+        required: false
+        default: 'false'
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: |
+          if [ "${{ github.event.inputs.coverage }}" == "false" ]; then
+            npm test
+          else
+            npm run test:coverage
+          fi
