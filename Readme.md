@@ -220,8 +220,12 @@ Run integration tests using:
    ```bash
    # All tests
    npm run test 
+
    # Only Integration tests
    npm run test:integration
+
+   #RUn with coverage thresholds 80
+    npm run test:coverage
    ```
 
 ### Code Formatting and Linting 🧹

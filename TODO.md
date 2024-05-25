@@ -29,7 +29,7 @@
     * [x] Create a visual representation of the application architecture (diagram).
     * [ ] Implement unit tests to verify the functionality of different components.
         * [x] User: Usecases and controllers 
-        * [ ] Feeds: Usecases and controllers
+        * [x] Feeds: Usecases and controllers
     * [x] Add some integration test to ensure API endpoints work as expected.  
     * [x] Swagger OpenApi Documentation
 * **Details**
@@ -41,7 +41,7 @@
 * **Improvements**
     * [x] Formalizing exceptions and Errors for Users and Feeds
     * [x] REVIEW ESLINT FORMAT ERRORS
-    * [ ] Create more tests for better coverage
+    * [ ] Create more tests for **better coverage** to reach at least 80% of the total.
     * [ ] Unify Feeds and User response through the THttpResponse interface. Currently implemented only in the Users controller.
 
 
