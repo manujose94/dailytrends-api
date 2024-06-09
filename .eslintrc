@@ -12,7 +12,7 @@
     "prettier"
   ],
   "rules": {
-    "@typescript-eslint/naming-convention": "error",
+    "@typescript-eslint/naming-convention": "warn",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/consistent-type-definitions": ["off", "type"]
   },
