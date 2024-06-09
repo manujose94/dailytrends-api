@@ -1,6 +1,6 @@
-
-import { IEncryptor } from "../ports/security/encryptor-interface";
 import bcrypt from 'bcrypt';
+import { IEncryptor } from '../ports/security/encryptor-interface';
+
 export class Encryptor implements IEncryptor {
     async hash(input: string): Promise<string> {
         const saltRounds = 10;

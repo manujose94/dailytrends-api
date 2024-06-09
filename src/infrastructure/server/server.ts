@@ -8,19 +8,22 @@ const logger = getLogger(Config.getLogLevel());
 
 export const startServer = async (port: number | string): Promise<Server> => {
   const app = createApp();
-  const database = new Database();
-  return await new Promise<Server>((resolve, reject) => {
-    const server = app.listen(port, async () => {
-      try {
-        await database.connect();
-        logger.info(
-          `Server is running on port ${port} and database is connected`
-        );
-        resolve(server);
-      } catch (dbError) {
-        server.close(() => reject(dbError));
-      }
+
+  return await new Promise<Server>(async (resolve, reject) => {
+    const database = new Database();
+
+    try {
+      await database.connect();
+    } catch (dbError) {
+      reject(dbError);
+      return;
+    }
+
+    const server = app.listen(port, () => {
+      logger.info(`Server is running on port ${port} and database is connected`);
+      resolve(server);
     });
+
     server.on("error", (serverError) => {
       logger.error("Failed to start server:", serverError);
       reject(serverError);

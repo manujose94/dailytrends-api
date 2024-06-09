@@ -1,6 +1,6 @@
-import { LoginUserUseCase } from "../../usecase/login-user-use-case";
-import { RegisterUserUseCase } from "../../usecase/register-user-use-case";
-import { JwtService } from "../../../infrastructure/core/jwt-service";
+import { LoginUserUseCase } from "../../../application/usecases/login-user-use-case";
+import { RegisterUserUseCase } from "../../../application/usecases/register-user-use-case";
+
 import {
   errorResponse,
   successLoginResponse,
@@ -13,12 +13,14 @@ import UserRepository from "../../repositories/user-repository";
 import { IRegisterUserCase } from "../../../domain/auth/usecase/register-user-case-interface";
 import { InputValidationException } from "../../../common/exceptions/input-validation-exception";
 import { AuthPreconditionException } from "../../../domain/auth/exception/auth-precondition-exception";
+import { IJwtService } from "../../../application/ports/security/jwt-service-interface";
+
 
 export class UserAuthController implements IAuthController {
   private loginUseCase: ILoginUserCase;
   private registerUseCase: IRegisterUserCase;
 
-  constructor(jwtService: JwtService) {
+  constructor(jwtService: IJwtService) {
     const userRepo = new UserRepository();
     this.loginUseCase = new LoginUserUseCase(jwtService, userRepo);
     this.registerUseCase = new RegisterUserUseCase(userRepo);

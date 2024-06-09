@@ -12,8 +12,12 @@ services:
     container_name: ts-project
     command: /bin/bash
   mongo:
-    image: mongo
+    image: mongo:4.4
     ports:
       - 27018:27017
     volumes:
       - ./data:/data/db
+  redis:
+    image: redis:6.2
+    ports:
+      - 6379:6379

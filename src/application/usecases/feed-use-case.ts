@@ -1,14 +1,13 @@
-import { NewsService } from "../services/news-feed-service";
+
 import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import { IFeedUserCase } from "../../domain/feed/usecase/feed-use-case-interface";
 import { normalizeProviderName } from "../../common/utils/normalize-provider-name";
 import { FeedData } from "./dto/feed-data-dto";
-export class NewsUseCase implements IFeedUserCase {
-  private newsService: NewsService;
+import { INewsService } from "../ports/services/news-service-interface";
 
-  constructor(newsService: NewsService) {
-    this.newsService = newsService;
-  }
+export class NewsUseCase implements IFeedUserCase {
+  constructor(private newsService: INewsService) {}
+  
   async executeScrape(
     providerName: string,
     limit?: number

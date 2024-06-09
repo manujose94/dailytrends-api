@@ -12,6 +12,12 @@ export class Config {
     );
   }
 
+  static getRedisConnectionString(): string {
+    const redisUrl = process.env.REDIS_URL || 'localhost';
+    const redisPort = process.env.REDIS_PORT || '6379';
+    return `redis://${redisUrl}:${redisPort}`;
+  }
+
   static getLogLevel(): string {
     switch (process.env.NODE_ENV) {
       case "test":

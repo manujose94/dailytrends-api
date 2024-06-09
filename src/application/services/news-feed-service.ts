@@ -1,16 +1,14 @@
 import { FeedConditionException } from "../../common/exceptions/feeds-condition-exception";
 import { FeedEntity } from "../../domain/feed/entities/feed-entity";
 import IFeedRepository from "../../domain/port/feeds-repository-interface";
-import { INewsProvider } from "../ports/providers/provider-news-feeds-interface";
+import { INewsProvider } from "../../application/ports/providers/provider-news-feeds-interface";
+import { INewsService } from "../ports/services/news-service-interface";
 
-export class NewsService {
-  private feedRepository: IFeedRepository;
-  private providers: INewsProvider[];
-
-  constructor(feedRepository: IFeedRepository, providers: INewsProvider[]) {
-    this.feedRepository = feedRepository;
-    this.providers = providers;
-  }
+export class NewsService implements INewsService {
+  constructor(
+    private feedRepository: IFeedRepository,
+    private providers: INewsProvider[]
+  ) {}
 
   async scrapeAndGetFeeds(
     providerName: string,

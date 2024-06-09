@@ -1,24 +1,28 @@
 import { Request, Response } from "express";
 import { FeedRepository } from "../../repositories/feed-repository";
-import { NewsService } from "../../services/news-feed-service";
-import { BBCNewsProvider } from "../../../infrastructure/provider/bbc-news-provider";
-import { ElPaisNewsProvider } from "../../../infrastructure/provider/elpais-news-provider";
-import { ElMundoNewsProvider } from "../../../infrastructure/provider/elmundo-new-provider";
-import { NewsUseCase } from "../../usecase/feed-use-case";
 import { normalizeProviderName } from "../../../common/utils/normalize-provider-name";
 import { INewsFeedController } from "../../ports/controllers/news-feed-controller-interface";
-import { validateFeedData } from "../../validation/feed-validator";
 import { FeedPreconditionException } from "../../../domain/feed/exceptions/feed-precondition-exception";
-import { FeedData } from "../../../adapters/usecase/dto/feed-data-dto";
 import { FeedConditionException } from "../../../common/exceptions/feeds-condition-exception";
 import { errorResponse, successResponse } from "../../../common/httpResponses";
+import { NewsService } from "../../../application/services/news-feed-service";
+import { NewsUseCase } from "../../../application/usecases/feed-use-case";
+import { FeedData } from "../../../application/usecases/dto/feed-data-dto";
+import { validateFeedData } from "../../../application/validation/feed-validator";
 
+import { NewsProviderFactory } from "../../../infrastructure/factories/news-provider-factory";
+import { INewsProvider } from "../../../application/ports/providers/provider-news-feeds-interface";
+import { RedisCacheService } from "../../../infrastructure/core/redis-cache-service";
+
+const cacheService = new RedisCacheService();
 const feedRepository = new FeedRepository();
+// Create providers using the factory
 const providers = [
-  new BBCNewsProvider(),
-  new ElMundoNewsProvider(),
-  new ElPaisNewsProvider()
-];
+  NewsProviderFactory.createNewsProvider("ELMUNDO", cacheService),
+  NewsProviderFactory.createNewsProvider("ELPAIS", cacheService),
+  NewsProviderFactory.createNewsProvider("BBC", cacheService)
+].filter(provider => provider !== null) as INewsProvider[];
+
 const newsService = new NewsService(feedRepository, providers);
 const newsUseCase = new NewsUseCase(newsService);
 

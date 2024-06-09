@@ -2,6 +2,7 @@ import { Config } from "./infrastructure/config/config";
 import getLogger from "./infrastructure/config/logger";
 import { startServer } from "./infrastructure/server/server";
 import { Server } from "http";
+import { gracefulShutdown } from "./infrastructure/server/shutdown";
 const logger = getLogger(Config.getLogLevel());
 const port = Config.getPort();
 
@@ -17,21 +18,14 @@ startServer(port)
     process.exit(1);
   });
 
-// Handling Events SIGTERM and SIGINT to cleanly close the server
+// Signal Handlers
 process.on("SIGTERM", () => {
   logger.info("SIGTERM signal received: closing HTTP server");
-  if (server) {
-    server.close(() => {
-      logger.info("HTTP server closed");
-    });
-  }
+  gracefulShutdown(server);
 });
+
 process.on("SIGINT", () => {
   logger.info("SIGINT signal received: closing HTTP server");
-  if (server) {
-    server.close(() => {
-      logger.info("HTTP server closed");
-      process.exit(0);
-    });
-  }
+  gracefulShutdown(server);
 });
+

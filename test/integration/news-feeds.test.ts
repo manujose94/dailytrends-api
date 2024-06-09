@@ -1,14 +1,16 @@
 import request from "supertest";
-import { NewsService } from "../../src/adapters/services/news-feed-service";
-import { NewsUseCase } from "../../src/adapters/usecase/feed-use-case";
+
 import { FeedEntity } from "../../src/domain/feed/entities/feed-entity";
 import createApp from "../../src/infrastructure/server/app";
 import { mockAuthenticateToken } from "../mocks/authenticateToken";
+import { NewsService } from "../../src/application/services/news-feed-service";
+import { NewsUseCase } from "../../src/application/usecases/feed-use-case";
+
 jest.mock("../../src/infrastructure/core/jwt-service", () => ({
   JwtService: require("../../test/mocks/JwtService").JwtService
 }));
-jest.mock("../../src/adapters/services/news-feed-service");
-jest.mock("../../src/adapters/usecase/feed-use-case");
+jest.mock("../../src/application/services/news-feed-service");
+jest.mock("../../src/application/usecases/feed-use-case");
 
 describe("NewsFeedsController", () => {
   let newsServiceMock: jest.Mocked<NewsService>;

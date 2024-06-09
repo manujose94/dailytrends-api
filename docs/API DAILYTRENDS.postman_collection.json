@@ -350,6 +350,55 @@
 			"response": []
 		},
 		{
+			"name": "Get Feeds by Provider Name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elmundo",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"news",
+						"scrape"
+					],
+					"query": [
+						{
+							"key": "provider",
+							"value": "elmundo"
+						}
+					]
+				},
+				"description": "G"
+			},
+			"response": []
+		},
+		{
 			"name": "Create Feed",
 			"request": {
 				"auth": {
@@ -744,56 +793,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{BaseURL}}/api/v1/news/scrape?provider=elmundo",
-					"host": [
-						"{{BaseURL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"news",
-						"scrape"
-					],
-					"query": [
-						{
-							"key": "provider",
-							"value": "elmundo"
-						}
-					]
-				},
-				"description": "G"
-			},
-			"response": []
-		},
-		{
-			"name": "Get Feeds by Provider Name",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE1NzExMjg4fQ.xTvhU24G81HYLgncZDrqqOGs3CTrvBfA710zq7ToC5E",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -860,7 +860,7 @@
 		},
 		{
 			"key": "token",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE2MzI4MTA5fQ.5Hc429nmihV9UAcr4p-248L3ivWfUQH8NQ84OO5mrgk",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJwYXNzd29yZCI6InBhc3N3b3JkMTIzIiwiaWF0IjoxNzE3OTYxMTIwfQ.CYJahJWmjdJ2RPH2Oc5qciODJIazF1tvg8Pfjargo-w",
 			"type": "string"
 		}
 	]

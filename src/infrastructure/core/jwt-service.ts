@@ -2,7 +2,9 @@ import jwt from 'jsonwebtoken';
 import { Config } from '../config/config';
 
 
-export class JwtService {
+import { IJwtService } from '../../application/ports/security/jwt-service-interface';
+
+export class JwtService implements IJwtService {
   private readonly secretKey: string;
 
   constructor(secretKey: string = Config.getSecretKey()) {

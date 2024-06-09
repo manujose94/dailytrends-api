@@ -48,42 +48,78 @@ The **Clean Architecture** principles is used, which divide issues into layers a
 
 #### Diagram 📊
 
+Overall clean architecture with a focus on the Dependency Inversion Principle (DIP):
+
 ```mermaid
 graph TD
-    UI["UI Layer"] --> Controllers["Controllers"]
+    subgraph domain["Domain (Domain Layer)"]
+        direction TB
+    end
+
+    subgraph application["Application (Application Layer)"]
+        direction TB
+    end
+
+    subgraph adapters["Adapters (Adapter Layer)"]
+        direction TB
+    end
+
+    subgraph infrastructure["Infrastructure (Infrastructure Layer)"]
+        direction TB
+    end
+
+    domain --> application
+    application --> adapters
+    adapters --> infrastructure
+```
+
+Detail of clean architecture where each component adheres to the single responsibility principle (SRP):
+
+```mermaid
+graph TB
+   
     UseCases --> Entities["Entities"]
     Repositories --> DataSources["Data Sources"]
     UseCases -.-> Ports  
-    subgraph domain["Domain (Domain Layer)"]
+ 
+
+     subgraph adapters["Adapters (Adapter Layer)"]
+        Controllers["Controllers"]
+        Repositories["Repositories"]
+        Controllers --> UseCases
+        Repositories --> DataSources
+    end
+
+
+
+    subgraph application["Application (Application Layer)"]
+        UseCases["Use Cases"]
+        Services["Services"]
+        Ports["Ports"]
+        Validation["Validation"]
+        UseCases --> Services
+        UseCases --> Ports
+        Services --> Ports
+        Services --> Validation
+    end
+
+       subgraph domain["Domain (Domain Layer)"]
         Models["Models"]
-        Exception["Exception"]
+        Exception["Exceptions"]
         Entities["Entities"]
         Ports["Ports (Interfaces)"]
         Entities --> Models
         Entities --> Exception 
     end
 
-    subgraph adapters["Adapter (Application Layer)"]
-        Controllers["Controllers"]
-        UseCases["Use Cases"]
-        Repositories["Repositories"]
-        Services["Services"]
-        Port["Ports"]
-        Validation["Validation"]
-        Controllers --> UseCases
-        UseCases --> Repositories
-        UseCases --> Services
-        Services --> Port
-        Services --> Validation
-    end
 
     subgraph infrastructure["Infrastructure (Infrastructure Layer)"]
-        
         Server["Server"]
         Routes["Routes"]
         Middleware["Middleware"]
         Config["Config"]
         Provider["Provider"]
+        External["External"]
         Database["Database (MongoDB)"]
         DataSources["Data Sources"]
         DataSources --> Database
@@ -92,6 +128,7 @@ graph TD
         Server --> Middleware
         Server --> Config
         Server --> Provider
+        External --> Provider
     end
 ```
 
@@ -117,6 +154,8 @@ Throughout the project's development, the SOLID principles have been followed, w
 - npm (Node Package Manager)
 - TypeScript
 - Express
+- Mongoose
+- Redis
 - Eslint
 - Jest
 - Swagger and Postman
@@ -150,6 +189,8 @@ The application uses environment variables for configuration. Below is a table d
 |----------------------------|-----------------------------------------------------|------------------------------------------|
 | `JWT_SECRET_KEY`           | Secret key for JWT authentication.                  | `default_secret_key`                     |
 | `MONGODB_CONNECTION_STRING`| MongoDB connection string.                          | `mongodb://localhost:27018/mydatabase`   |
+| `REDIS_URL`                | Redis server URL.                                   | `localhost`                              |
+| `REDIS_PORT`               | Redis server port.                                  | `6379`                                   |
 | `NODE_ENV`                 | Environment the application is running in.          | `development`                            |
 | `PORT`                     | The port on which the application runs.             | `3000`                                   |
 | `RATE_LIMIT_WINDOW_MS`     | Timeframe for rate limit in milliseconds.           | `900000` (15 minutes)                    |
@@ -161,9 +202,9 @@ The application uses environment variables for configuration. Below is a table d
    npm install
    ```
 
-2. Start `mongo` via `docker-compose`:
+2. Start `mongo` and `redis` via `docker-compose`:
    ```bash
-   docker-compose up mongo
+   docker-compose up mongo redis
    ```
 
 3. Start the application:
@@ -175,13 +216,13 @@ The application uses environment variables for configuration. Below is a table d
 
 ### Development Mode 👩‍💻
 
-To run the application in development mode with a MongoDB connection string:
+To run the application in development mode with a MongoDB and Redis connection string:
    ```bash
-   docker-compose up mongo
+   docker-compose up mongo redis
    npm run start:dev
    ```
 
-> This script sets the MongoDB connection string environment variable (url to connect `docker-compose up mongo`) and starts the application.
+> This script sets the MongoDB and Redis connection string environment variables (URL to connect `docker-compose up mongo redis`) and starts the application.
 
 ### Docker Usage 🐳
 
@@ -196,6 +237,8 @@ NODE_ENV=development
 PORT=3000
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT=100
+REDIS_URL=localhost
+REDIS_PORT=6379
 ```
 
 This case uses a multi-stage Docker build to separate development and production environments:
@@ -283,6 +326,13 @@ Resume of best practices followed to ensure code quality, maintainability, and s
 5. **Documentation**
    -  Maintain clear documentation for the API:
       - Using `Swagger and OpenAPI` for documentation API endpoints, expected inputs, and outputs.
+6. **MongoDB Connection with Backoff**:
+   - Implement a robust MongoDB connection strategy with exponential backoff to handle connection retries gracefully.
+   - Advantages include improved reliability in unstable network conditions and reduced overload on MongoDB servers.
+7. **Redis for Caching**:
+   - Use Redis for efficient caching to improve application performance when used to scrape content.
+   - Connection strategy with exponential backoff
+   - Set appropriate expiration times for cache entries, e.g., `EX: 7200` (2 hours), to ensure data freshness and optimal memory usage.
 
 ### CI/CD Workflows
 

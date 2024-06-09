@@ -1,10 +1,11 @@
 
 
-import { Encryptor } from '../../../src/adapters/services/encryptor-service';
-import { LoginUserUseCase } from '../../../src/adapters/usecase/login-user-use-case';
+
 import IUserRepository from "src/domain/port/user-repository-interface";
 import { JwtService } from '../../../src/infrastructure/core/jwt-service';
 import { THttpRequest } from '../../../src/common/types/http-types';
+import { LoginUserUseCase } from "../../../src/application/usecases/login-user-use-case";
+import { Encryptor } from "../../../src/application/services/encryptor-service";
 
 describe('LoginUserUseCase', () => {
     let loginUserUseCase: LoginUserUseCase;

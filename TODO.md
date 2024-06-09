@@ -43,7 +43,23 @@
     * [x] REVIEW ESLINT FORMAT ERRORS
     * [ ] Create more tests for **better coverage** to reach at least 80% of the total.
     * [ ] Unify Feeds and User response through the THttpResponse interface. Currently implemented only in the Users controller.
+    * [ ] Improve paths to be more simple.
+  
+  ```bash
+    "paths": {
+        "@/adapters/*":[
+            "src/adapters/*"
+        ],
+        "@/application/*":[
+            "src/application/*"
+        ],
+        "@/domain/*":[
+            "src/domain/*"
+        ],
+        "@/infrastructure/*":[
+            "src/infrastructure/*"
+        ],
+     }
 
-
-
-
+    #Example: import { IRepository } from "@/domain/repository.interface";
+  ```

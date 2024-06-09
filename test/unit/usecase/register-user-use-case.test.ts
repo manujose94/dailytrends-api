@@ -1,6 +1,6 @@
-import { Encryptor } from "src/adapters/services/encryptor-service";
 
-import { RegisterUserUseCase } from "../../../src/adapters/usecase/register-user-use-case";
+import { Encryptor } from "src/application/services/encryptor-service";
+import { RegisterUserUseCase } from "../../../src/application/usecases/register-user-use-case";
 import { THttpRequest } from "src/common/types/http-types";
 import IUserRepository from "src/domain/port/user-repository-interface";
 describe("RegisterUserUseCase", () => {

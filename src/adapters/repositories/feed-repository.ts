@@ -9,14 +9,13 @@ export class FeedRepository
   extends BaseRepository<IFeed>
   implements IFeedRepository
 {
-  private feedModel = FEED_MODEL;
 
   constructor() {
     super(FEED_MODEL);
   }
 
   async getFeeds(): Promise<FeedEntity[]> {
-    return this.feedModel
+    return this.model
       .find()
       .lean()
       .then((feeds) => {
@@ -35,7 +34,7 @@ export class FeedRepository
 
   //TODO: REVIEW THIS
   async getFeedsByDate(date: Date): Promise<FeedEntity[]> {
-    const feeds = await this.feedModel.find({ publicationDate: date }).lean();
+    const feeds = await this.model.find({ publicationDate: date }).lean();
     return feeds.map(
       (feed) =>
         new FeedEntity(
@@ -49,7 +48,7 @@ export class FeedRepository
   }
 
   async getFeedsByProviderName(provider: string): Promise<FeedEntity[]> {
-    const feeds = await this.feedModel.find({ provider }).exec();
+    const feeds = await this.model.find({ provider }).exec();
     return feeds;
   }
 
@@ -77,14 +76,14 @@ export class FeedRepository
       }
     ];
 
-    const feeds = await this.feedModel.aggregate(aggregationPipeline).exec();
+    const feeds = await this.model.aggregate(aggregationPipeline).exec();
     return feeds;
   }
 
   async create(feed: FeedEntity): Promise<string | null> {
     feed.provider = normalizeProviderName(feed.provider);
     try {
-      const result = await this.feedModel.updateOne(
+      const result = await this.model.updateOne(
         { title: feed.title, publicationDate: feed.publicationDate },
         feed,
         { upsert: true, new: true }
@@ -103,7 +102,7 @@ export class FeedRepository
   }
 
   async delete(id: string): Promise<void> {
-    await this.feedModel.deleteOne({
+    await this.model.deleteOne({
       id: id
     });
   }
