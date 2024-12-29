@@ -4,13 +4,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: base
+      target: ${BUILD_TARGET:-development}
     volumes:
       - .:/usr/src/app
     ports:
       - 8087:8080
     container_name: ts-project
-    command: /bin/bash
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydb
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongo
+      - redis
+    #command: /bin/bash
   mongo:
     image: mongo:4.4
     ports:
