@@ -7,7 +7,7 @@ export class Config {
   }
   static getMongoDBConnectionString(): string {
     return (
-      process.env.MONGODB_CONNECTION_STRING ||
+      process.env.MONGODB_CONNECTION_STRING || 
       "mongodb://localhost:27018/mydatabase"
     );
   }
@@ -41,6 +41,6 @@ export class Config {
   }
 
   static getRateLimit(): number {
-    return parseInt(process.env.RATE_LIMIT || "100"); // Default limit to 100 requests
+    return parseInt(process.env.RATE_LIMIT || "1000"); // Default limit to 100 requests
   }
 }

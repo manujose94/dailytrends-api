@@ -1,5 +1,11 @@
 ## TODO
 
+**Maintenance**
+
+* [ ] Delete user via token of user
+* [ ] Update image ghrc
+* [ ] Update and review documentation
+
 **Tasks**
 
 * **Project Setup**

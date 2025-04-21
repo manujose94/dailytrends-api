@@ -1,16 +1,16 @@
 import http from 'k6/http';
-import { config } from '../constants.js';
+import { CONFIGURATION } from '../constants.js';
 import { encodedCredentials } from '../utils/http-utils.js';
 
 let token; 
 
-if(config.AUTHORIZATION == "Basic") {
+if(CONFIGURATION.AUTHORIZATION == "Basic") {
   token = encodedCredentials(`${config.USER}`, `${config.PASSWORD}`);
 } else { //Bearer
-  token = `${config.JWT_TOKEN}`;
+  token = `${CONFIGURATION.JWT_TOKEN}`;
 }
 
-let authorization = config.AUTHORIZATION + ' ' + token;
+let authorization = CONFIGURATION.AUTHORIZATION + ' ' + token;
 
 let params = {
   headers: {
@@ -25,14 +25,18 @@ export class HttpClient {
     constructor() {
     }
   
-    getNews() {
-      return http.get(`${config.HOST}//api/v1/news/scrape?provider=elmundo&limit=5`, params);
+    getNewsElMundo(limit=10) {
+      return http.get(`${CONFIGURATION.HOST}//api/v1/news/scrape?provider=elmundo&limit=${limit}`, params);
+    }
+
+    getNewsElPais(limit=10) {
+      return http.get(`${CONFIGURATION.HOST}//api/v1/news/scrape?provider=elmundo&limit=${limit}`, params);
     }
 
     loginUser(body) {
-      return http.post(`${config.HOST}/api/v1/auth/login`, body, params);
+      return http.post(`${CONFIGURATION.HOST}/api/v1/auth/login`, body, params);
     }
     registerUser(body) {
-        return http.post(`${config.HOST}/api/v1/auth/register`, body, params);
+        return http.post(`${CONFIGURATION.HOST}/api/v1/auth/register`, body, params);
       }
 }

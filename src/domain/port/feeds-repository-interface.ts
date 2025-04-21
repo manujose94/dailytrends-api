@@ -7,4 +7,5 @@ export default interface IFeedRepository extends IRepository<FeedEntity> {
   getFeedsByProvider(limit?: number): Promise<FeedEntity[]>;
   getFeedsByProviderName(provider: string): Promise<FeedEntity[]>;
   create(feed: FeedEntity): Promise<string | null>;
+  deleteFeeds(filter: { _id?: string; publicationDate?: { $lt?: Date }; provider?: string }): Promise<void>;
 }

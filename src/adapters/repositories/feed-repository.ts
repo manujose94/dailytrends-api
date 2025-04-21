@@ -4,6 +4,7 @@ import { FEED_MODEL, IFeed } from "../../domain/feed/models/feed-model";
 import IFeedRepository from "../../domain/port/feeds-repository-interface";
 import { isDuplicateKeyError } from "../../common/utils/error-utils";
 import { BaseRepository } from "./base-repository";
+import { DuplicateKeyError } from "../../common/exceptions/duplicate-keys";
 
 export class FeedRepository
   extends BaseRepository<IFeed>
@@ -94,7 +95,7 @@ export class FeedRepository
       return null;
     } catch (error) {
       if (isDuplicateKeyError(error)) {
-        return null;
+        throw new DuplicateKeyError("Feed already exists");
       } else {
         throw error;
       }
@@ -105,5 +106,9 @@ export class FeedRepository
     await this.model.deleteOne({
       id: id
     });
+  }
+
+  async deleteFeeds(filter: { _id?: string; publicationDate?: { $lt?: Date }; provider?: string }): Promise<void> {
+    await this.model.deleteMany(filter);
   }
 }

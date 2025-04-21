@@ -1,5 +1,5 @@
 export const CONFIGURATION = {
-    HOST: __ENV.hasOwnProperty('HOST') ? __ENV.HOST : "http://localhost:3000",
+    HOST: __ENV.hasOwnProperty('TARGET_HOST') ? __ENV.TARGET_HOST : "http://localhost:3000",
     WAIT_TIME: __ENV.hasOwnProperty('WAIT_TIME') ? parseInt(__ENV.WAIT_TIME) : 300,
     WAIT_TIME_RANDOM: __ENV.hasOwnProperty('WAIT_TIME_RANDOM') ? parseInt(__ENV.WAIT_TIME_RANDOM) : 20,
     AUTHORIZATION: __ENV.hasOwnProperty('AUTHORIZATION') ? __ENV.AUTHORIZATION : "Bearer",
@@ -9,7 +9,6 @@ export const CONFIGURATION = {
 }
 
   export const PATH_WEIGHT = {
-    "getNews": __ENV.hasOwnProperty('PATH_WEIGHT_1') ? parseFloat(__ENV.PATH_WEIGHT_1) : 0.6,
-    "registerUser": __ENV.hasOwnProperty('PATH_WEIGHT_2') ? parseFloat(__ENV.PATH_WEIGHT_2) : 0.2,
-    "loginUser": __ENV.hasOwnProperty('PATH_WEIGHT_3') ? parseFloat(__ENV.PATH_WEIGHT_3) : 0.2
+    "getNewsElMundo": __ENV.hasOwnProperty('PATH_WEIGHT_2') ? parseFloat(__ENV.PATH_WEIGHT_2) : 0.4,
+    "getNewsElPais": __ENV.hasOwnProperty('PATH_WEIGHT_3') ? parseFloat(__ENV.PATH_WEIGHT_3) : 0.6
 };

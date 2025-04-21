@@ -540,7 +540,7 @@ router.put("/feeds/:id", authenticateToken, newsFeedsController.updateFeed);
  *               application/json:
  *                 value: 
  *                   success: true
- *                   message: "Feed deleted successfully"
+ *                 
  *       401:
  *         description: Unauthorized 
  *       500:
@@ -626,4 +626,80 @@ router.get(
   newsFeedsController.listFeeds
 );
 
+/**
+ * @swagger
+ * /feeds:
+ *   delete:
+ *     summary: Delete feeds based on a filter
+ *     description: |
+ *       Deletes feeds that match the specified filter criteria. The filter must contain at least one of the following fields:
+ *       - `_id`: Delete a feed by its unique ID.
+ *       - `publicationDate`: Delete feeds older than a specific date (e.g., `{ "$lt": "2025-01-01T00:00:00.000Z" }`).
+ *       - `provider`: Delete feeds from a specific provider (e.g., `"skeptics"`).
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               filter:
+ *                 type: object
+ *                 description: Filter to delete feeds. Must contain at least one valid field.
+ *                 example:
+ *                   _id: "6796c365a6a07e4d379ca8e0"
+ *                 required:
+ *                   - _id or publicationDate or provider
+ *     responses:
+ *       204:
+ *         description: Feeds deleted successfully. No content is returned.
+ *       400:
+ *         description: |
+ *           Invalid filter provided. Possible reasons:
+ *           - The filter is empty or does not contain any valid fields.
+ *           - The `publicationDate` filter is missing the `$lt` field.
+ *           - The `_id` or `provider` field is invalid (e.g., wrong data type).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A detailed error message.
+ *               example:
+ *                 message: "Filter must contain at least one of the following fields: _id, publicationDate, provider"
+ *       401:
+ *         description: Unauthorized. The request is missing a valid authentication token or the token is invalid.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A detailed error message.
+ *               example:
+ *                 message: "Unauthorized: Missing or invalid token"
+ *       500:
+ *         description: |
+ *           Failed to delete feeds due to an internal server error. Possible reasons:
+ *           - Database connection issues.
+ *           - Unexpected errors during the deletion process.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A generic error message.
+ *                 error:
+ *                   type: string
+ *                   description: Detailed error message (only in development mode).
+ *               example:
+ *                 message: "Failed to delete feeds"
+ *                 error: "Database connection failed"
+ */
+router.delete("/feeds", authenticateToken, newsFeedsController.deleteFeeds);
 export default router;

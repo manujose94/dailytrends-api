@@ -17,6 +17,7 @@ An API project that exposes a news feed.
   - [Usage 🚀](#usage-)
     - [Environment Variables 🌐](#environment-variables-)
     - [Running the Application ▶️](#running-the-application-️)
+    - [Makefile 🧪](#makefile-)
     - [Development Mode 👩‍💻](#development-mode-)
     - [Docker Usage 🐳](#docker-usage-)
       - [Development Image 🛠️](#development-image-️)
@@ -25,6 +26,9 @@ An API project that exposes a news feed.
     - [Code Formatting and Linting 🧹](#code-formatting-and-linting-)
     - [API Documentation 📜](#api-documentation-)
       - [Postman 📬](#postman-)
+    - [Load Testing with K6 ⚡](#load-testing-with-k6-)
+      - [Key Features](#key-features)
+      - [Scripts Included](#scripts-included)
   - [Roadmap 🛤️](#roadmap-️)
   - [Best Practices 🌟](#best-practices-)
     - [CI/CD Workflows](#cicd-workflows)
@@ -35,7 +39,7 @@ An API project that exposes a news feed.
   
 ## Description 📄
 
-DailyTrends is an API that exposes a news feed aggregator. This feed collects news from different newspapers, focusing on the top headlines from leading newspapers. When a user accesses DailyTrends, they will see the top 5 headlines from `El País` and `El Mundo` for the current day. Additionally, users can manually add news articles through the API.
+DailyTrends is an API that exposes a news feed aggregator. This feed collects news from different newspapers, focusing on the top headlines from leading newspapers. When a user accesses DailyTrends, they will see the top 5 headlines from `El País`,  `El Mundo` or `BBC` for the current day. Additionally, users can manually add news articles through the API.
 
 ### Architecture 🏛️
 
@@ -165,16 +169,19 @@ Throughout the project's development, the SOLID principles have been followed, w
 ## Installation 💾
 
 1. Clone the repository:
+
    ```bash
    git clone <repository_url>
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Compile the TypeScript files to JavaScript:
+
    ```bash
    npx tsc
    ```
@@ -198,27 +205,55 @@ The application uses environment variables for configuration. Below is a table d
 ### Running the Application ▶️
 
 1. Install Dependencies:
+
    ```bash
    npm install
    ```
 
 2. Start `mongo` and `redis` via `docker-compose`:
+
    ```bash
    docker-compose up mongo redis
    ```
 
 3. Start the application:
+
    ```bash
    npm run start
    ```
 
 > This will run the compiled JavaScript files located in the `dist` directory.
 
+### Makefile 🧪
+
+To run **just your application and its dependencies** (API, MongoDB, Redis):
+
+```bash
+make up
+# Default: ENV=des then use .env_des file
+```
+
+This command starts only the services relevant to development:
+
+- Your TypeScript API (`app`)
+- MongoDB (`mongo`)
+- Redis (`redis`)
+
+Great for debugging, writing code, or doing manual QA locally.
+
+To shut it down:
+
+```bash
+make reset ENV=des
+```
+
 ### Development Mode 👩‍💻
 
 To run the application in development mode with a MongoDB and Redis connection string:
+
    ```bash
    docker-compose up mongo redis
+   export MONGODB_CONNECTION_STRING=mongodb://localhost:27018/mydatabase && /
    npm run start:dev
    ```
 
@@ -250,6 +285,13 @@ docker build --target development -t dailytrends-dev .
 docker run --env-file .env -p 3000:3000 dailytrends-dev
 ```
 
+```bash
+# Run the container with live-reloading:
+docker run --env-file .env -v $(pwd):/usr/src/app -v /usr/src/app/node_modules -p 3000:3000 dailytrends-dev
+```
+
+> Note: The development image is designed to make the development process easier by providing live-reloading using **nodemon** and **ts-node**. This setup ensures that changes to your source files are immediately reflected in the running application, without needing to rebuild the container.
+
 #### Production Image 📦
 
 ```bash
@@ -260,6 +302,7 @@ docker run --env-file .env -p 80:3000 dailytrends-prod
 ### Testing 🧪
 
 Run integration tests using:
+
    ```bash
    # All tests
    npm run test 
@@ -296,11 +339,30 @@ Swagger has been implemented via comments to automatically generate the API spec
    ```bash
    http://localhost:3000/api/v1/api-docs
    ```
+
 > NOTE: This is feasible for small projects like this one, but for larger projects it is advisable to create a separate specification file manually.
 
 #### Postman 📬
 
 A collection Postman [here](./docs/API%20DAILYTRENDS.postman_collection.json)
+
+### Load Testing with K6 ⚡
+
+To ensure the performance and reliability of the DailyTrends API under various load conditions, we use **K6**, a modern load testing tool. The load testing documentation provides detailed instructions for setting up, running, and analyzing both **end-to-end (E2E)** and **performance-focused** load tests.
+
+#### Key Features
+
+- **End-to-End (E2E) Testing**: Simulates real-world user workflows, covering registration, login, feed management, and news scraping.
+- **Performance Testing**: Focuses on evaluating the API's performance under high traffic scenarios, specifically targeting feed-related operations.
+- **Dynamic Configuration**: Allows you to customize the number of virtual users (VUs) and iterations for flexible testing scenarios.
+- **Integration with CI/CD**: Automates performance testing as part of the development pipeline.
+
+#### Scripts Included
+
+1. **`load_test_e2e_api.js`**: Designed for E2E testing, ensuring API functionality is correct across all endpoints.
+2. **`load_test_feeds_performance.js`**: Focused on performance testing, measuring response times, error rates, and resource utilization under heavy load.
+
+For more details, refer to the [Load Testing Documentation](./load-tests/Readme.md).
 
 ## Roadmap 🛤️
 
@@ -313,8 +375,8 @@ Resume of best practices followed to ensure code quality, maintainability, and s
 1. **Dependency Management**:
    - Specify the exact version of each dependency to ensure consistent builds, so avoid unexpected behavior due to dependency updates.
 2. **Environment Variables**:
-   - Configurable information, such as Database connection strings, or data configuration.   
-   >  `dotenv` to load environment variables from a `.env` file.
+   - Configurable information, such as Database connection strings, or data configuration.
+   > `dotenv` to load environment variables from a `.env` file.
 3. **Authentication and Authorization**:
    - Secure your application by implementing authentication and authorization mechanisms.
    > `jsonwebtoken` for generating and verifying JSON Web Tokens (JWTs) and `bcrypt` for hashing passwords
@@ -324,7 +386,7 @@ Resume of best practices followed to ensure code quality, maintainability, and s
      - Implementing authentication and authorization mechanisms with `jsonwebtoken`.
      - Integrating `express-rate-limit` to prevent DDoS attacks by limiting the number of requests from a single IP address or user.
 5. **Documentation**
-   -  Maintain clear documentation for the API:
+   - Maintain clear documentation for the API:
       - Using `Swagger and OpenAPI` for documentation API endpoints, expected inputs, and outputs.
 6. **MongoDB Connection with Backoff**:
    - Implement a robust MongoDB connection strategy with exponential backoff to handle connection retries gracefully.
@@ -340,22 +402,26 @@ Resume of best practices followed to ensure code quality, maintainability, and s
 
 - **File**: `test_code.yml`
 - **Description**: This workflow is triggered on pushes or pull requests to the `main` or `develop` branches. It runs tests for the project.
+
 > Serves as part of the Continuous Integration (CI) process, ensuring that changes introduced to the codebase do not break existing functionality.
 
 #### 2. Code Quality and Bug Detection
 
 - **File**: `check_code.yml`
 - **Description**: This workflow is also triggered on pushes or pull requests to the `main` or `develop` branches. It focuses on code quality checks using ESLint.
+
 > Contributes to the Continuous Integration (CI) process by enforcing code quality standards and detecting potential bugs early in the development cycle.
 
 #### 3. Build Image and Push to Registry
 
 - **File**: `build-and-publish.yml`
 - **Description**: This workflow has a more complex triggering mechanism. It's triggered on pushes to the `main` branch, specific version tags, or closed pull requests to the `main` branch. It builds a Docker image and pushes it to a container registry.
+
 > Handles aspects of Continuous Integration (CI) and Continuous Delivery (CD). It automates the process of building and deploying containerized applications, ensuring consistency and reliability across environments.
 
 #### 4. Automate Release Creation
 
 - **File**: `automate-release.yml`
 - **Description**: This workflow is triggered when pull requests are closed on the `main` branch or manually triggered. It automates the creation of GitHub releases based on pull request information.
+
 > Handles aspects of Continuous Deployment (CD) by 88automatically creating releases** on GitHub when changes are merged into the `main` branch.

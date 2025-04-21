@@ -1,11 +1,12 @@
 {
   "name": "dailytrends",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "index.js",
   "scripts": {
-    "start:dev": "MONGODB_CONNECTION_STRING=mongodb://localhost:27018/mydatabase node dist/index.js",
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "test": "jest ",
     "test:integration": "jest test/integration",
+    "test:controller": "jest test/unit/controller",
     "test:coverage": "jest --config test/jest.config.js --coverage",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" ",
@@ -34,6 +35,8 @@
     "winston": "^3.13.0"
   },
   "devDependencies": {
+    "ts-node": "^10.9.2",
+    "nodemon": "^3.1.9",
     "@babel/preset-env": "^7.24.5",
     "@babel/preset-typescript": "^7.24.1",
     "@eslint/js": "^9.2.0",

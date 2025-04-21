@@ -10,6 +10,7 @@ export class NewsService implements INewsService {
     private providers: INewsProvider[]
   ) {}
 
+
   async scrapeAndGetFeeds(
     providerName: string,
     limit?: number
@@ -50,6 +51,10 @@ export class NewsService implements INewsService {
 
   async getFeedsByProvider(limit?: number): Promise<FeedEntity[]> {
     return await this.feedRepository.getFeedsByProvider(limit);
+  }
+
+  async deleteFeeds(filter: { _id?: string; publicationDate?: { $lt?: Date; }; provider?: string; }): Promise<void> {
+    return await this.feedRepository.deleteFeeds(filter);
   }
 
   async create(feed: FeedEntity): Promise<string | null> {

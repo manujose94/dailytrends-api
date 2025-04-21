@@ -1,6 +1,6 @@
 import { check, group } from 'k6';
 import {  bodyBuilderUserLogin,bodyBuilderUserRegister, waitTimeRandom } from '../utils/http-utils.js';
-import { randomInt } from '../libs/lib_ksixcommon/random-util.js';
+import { getRandomIntInclusiveZeroToMax } from '../utils/random-utils.js';
 import { HttpClient } from '../clients/http-client.js';
 
 let client = new HttpClient()
@@ -28,7 +28,7 @@ export class HttpServices {
   loginUser (data) {
     group('loginUser', function () {
         
-        const user = randomInt(data - 1);
+        const user = getRandomIntInclusiveZeroToMax(data - 1);
         const body = bodyBuilderUserLogin(user);
 
         //POST request
@@ -42,10 +42,23 @@ export class HttpServices {
     waitTimeRandom()
   }
 
-  getNews () {
-    group('getNews', function () {
+  getNewsElMundo (limit) {
+    group('getNewsElMundo', function () {
         //POST request
-        let res = client.getNews();
+        let res = client.getNewsElMundo();
+        
+        //Check HTTP 200
+        check(res, {
+          'is status 200': (r) => r.status === 200 ||  r.status === 202,
+        });
+    })
+    waitTimeRandom()
+  }
+
+  getNewsElPais (limit) {
+    group('getNewsElPais', function () {
+        //POST request
+        let res = client.getNewsElPais();
         
         //Check HTTP 200
         check(res, {

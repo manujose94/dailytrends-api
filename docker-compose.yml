@@ -1,4 +1,5 @@
-version: '3.7'
+version: '3.9'
+
 services:
   app:
     build:
@@ -7,24 +8,78 @@ services:
       target: ${BUILD_TARGET:-development}
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/dist
+      - /usr/src/app/node_modules
     ports:
-      - 8087:8080
+      - 8087:3000
     container_name: ts-project
     environment:
-      - MONGO_URI=mongodb://mongo:27017/mydb
-      - REDIS_HOST=redis
+      - MONGODB_CONNECTION_STRING=mongodb://mongo:27017/mydatabase
+      - REDIS_URL=redis
       - REDIS_PORT=6379
     depends_on:
       - mongo
       - redis
-    #command: /bin/bash
+
   mongo:
     image: mongo:4.4
     ports:
       - 27018:27017
     volumes:
       - ./data:/data/db
+
   redis:
     image: redis:6.2
     ports:
       - 6379:6379
+
+  # Stack de performance
+  k6:
+    image: grafana/k6:latest
+    profiles: ["perf"]
+    volumes:
+      - ./load-tests:/app
+    environment:
+      # Default ENV vars
+      - SCRIPT_NAME=load_test_feeds_performance.js
+      - TARGET_HOST=http://app:3000
+      #- HOST=http://host.docker.internal:8087
+    entrypoint: [""]
+    command: >
+      sh -c "k6 run --out influxdb=http://influxdb:8086/k6 /app/k6/$$SCRIPT_NAME"
+    depends_on:
+      - influxdb
+
+  influxdb:
+    image: influxdb:1.8
+    profiles: ["perf"]
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=k6
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+
+  grafana:
+    image: grafana/grafana:latest
+    profiles: ["perf"]
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/dashboards/xk6-output-influxdb-dashboard.json:/usr/lib/dashboards/InfluxDB-common/dashboard.json
+      - ./grafana/dashboards/performance-test-dasboard.json:/usr/lib/dashboards/Performance-common/dashboard.json
+    depends_on:
+      - influxdb
+    environment:
+        GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: "true"
+        GF_AUTH_ANONYMOUS_ENABLED: "true"
+        GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+        GF_AUTH_DISABLE_SIGNOUT_MENU: "true"
+        GF_AUTH_DISABLE_LOGIN_FORM: "true"
+        GF_SECURITY_ADMIN_USER: "admin"
+        GF_SECURITY_ADMIN_PASSWORD=: "admin"
+
+volumes:
+  influxdb-storage:

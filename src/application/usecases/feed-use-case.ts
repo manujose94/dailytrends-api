@@ -4,6 +4,7 @@ import { IFeedUserCase } from "../../domain/feed/usecase/feed-use-case-interface
 import { normalizeProviderName } from "../../common/utils/normalize-provider-name";
 import { FeedData } from "./dto/feed-data-dto";
 import { INewsService } from "../ports/services/news-service-interface";
+import { validateDeleteFilter } from "../validation/feed-validator";
 
 export class NewsUseCase implements IFeedUserCase {
   constructor(private newsService: INewsService) {}
@@ -36,6 +37,12 @@ export class NewsUseCase implements IFeedUserCase {
 
   async getFeedsByProviderName(provider: string): Promise<FeedEntity[]> {
     return await this.newsService.getFeedsByProviderName(provider);
+  }
+
+  async deleteFeeds(filter: { _id?: string; publicationDate?: { $lt?: Date }; provider?: string }): Promise<void> {
+    // Validate the filter object
+    validateDeleteFilter(filter);
+    await this.newsService.deleteFeeds(filter);
   }
 
   async create(feedData: FeedData): Promise<string | null> {

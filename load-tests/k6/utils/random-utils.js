@@ -1,8 +1,3 @@
-"use strict";
-//Treated as an ES6 module, allowing you to use the import and export syntax
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 /**
  * Selects a random item from a weighted map.
  * @param {Object} map - An object where keys represent items and values represent weights.
