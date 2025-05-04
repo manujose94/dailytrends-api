@@ -18,6 +18,7 @@ export function setup() {
 
 
 export default function () {
+    // Implement
     // REVIEW: It is necessary to use token for each call
     // add token to header
     let pathType = randomWithWeight(PATH_WEIGHT);

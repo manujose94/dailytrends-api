@@ -34,6 +34,7 @@ services:
       - 6379:6379
 
   # Stack de performance
+  # REVIEW: Grafana Dashboard
   k6:
     image: grafana/k6:latest
     profiles: ["perf"]
