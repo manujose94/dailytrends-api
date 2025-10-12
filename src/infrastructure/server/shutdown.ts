@@ -18,7 +18,7 @@ export const gracefulShutdown = async (server: Server | null) => {
   }
 
   // Close the database connection if it's established
-  if (mongoose.connection.readyState === 1) { // 1 means connected
+  if (mongoose.connection.readyState === 1) {
     await mongoose.connection.close(false);
     logger.info("Database connection closed");
   }

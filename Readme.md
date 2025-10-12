@@ -185,6 +185,20 @@ Throughout the project's development, the SOLID principles have been followed, w
    ```bash
    npx tsc
    ```
+### Installation via Script 🧪
+
+#### 📦 Example Commands
+
+```bash
+# Example Commands:
+  ./setup.sh                  # Run all steps with Docker
+  ./setup.sh --use-podman     # Use Podman instead of Docker
+  ./setup.sh --no-build       # Skip build step
+  ./setup.sh --no-start       # Skip start step
+```
+
+> Note: More details about the script use `--help` or `-h` flag
+
 
 ## Usage 🚀
 

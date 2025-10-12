@@ -8,7 +8,7 @@ const logger =createLogger({
             format: format.combine(
                 format.colorize(),
                 format.printf(({ timestamp, level, message, metadata }) => {
-                    if (metadata.constructor === Object && Object.keys(metadata).length > 0){
+                    if (metadata && typeof metadata === 'object' && Object.keys(metadata).length > 0) {
                         return `[${timestamp}]:[${level}]:${message}:${JSON.stringify(metadata)}`;
                     }
                     return `[${timestamp}]:[${level}]:${message}`;
@@ -17,7 +17,7 @@ const logger =createLogger({
         }),
         new transports.File({
             dirname: 'logs',
-            filename: 'winston_example.log',
+            filename: 'app.log',
             format: format.combine(format.json()),
         }),
     ],

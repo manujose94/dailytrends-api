@@ -2,6 +2,9 @@
 
 **Maintenance**
 
+* [ ] Check new urls deleteUserByToken
+* [ ] Check using pnpm for better performance
+
 * [ ] Delete user via token of user
 * [ ] Update image ghrc
 * [ ] Update and review documentation
